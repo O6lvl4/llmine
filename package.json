@@ -21,7 +21,7 @@
     "chatgpt",
     "ai"
   ],
-  "author": "",
+  "author": "o6lvl4",
   "license": "MIT",
   "dependencies": {
     "@ai-sdk/azure": "^1.1.14",
