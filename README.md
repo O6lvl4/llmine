@@ -1,6 +1,8 @@
 # llmine
 
-<img src="docs/llmine-logo.png" width="300px" />
+<div style="text-align:center;">
+    <img src="docs/llmine-logo.png" width="300px" />
+</div>
 
 コマンドラインから LLM (ChatGPT など) にアクセスできる CLI ツールです。  
 OpenAI や Azure OpenAI をプロンプト一発で簡単に呼び出し、その結果を端末上に表示できます。
