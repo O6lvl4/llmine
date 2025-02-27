@@ -29,15 +29,18 @@ export function defaultCommand(program: Command) {
       }
 
       if (!promptText) {
+        // Prompt がなければ help を表示
         program.help();
         return;
       }
 
       const spinner = ora("LLMからの応答を待っています...")
       try {
+        // createAIClient は 1 つの引数のみ
         const aiClient = createAIClient(options.provider);
         spinner.start();
 
+        // createChatCompletion の引数は [messages], temperature, modelId の順です
         const answer = await aiClient.createChatCompletion(
           [{ role: "user", content: promptText }],
           parseFloat(options.temperature),
@@ -46,7 +49,7 @@ export function defaultCommand(program: Command) {
 
         spinner.stop();
         if (process.stdout.isTTY) {
-          console.log(chalk.green("\n回答:"));
+        console.log(chalk.green("\n回答:"));
         }
         console.log(answer);
       } catch (error: unknown) {

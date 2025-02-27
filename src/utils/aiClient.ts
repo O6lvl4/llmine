@@ -54,7 +54,6 @@ class VercelOpenAIClient implements AIClient {
     // CLI 指定または設定ファイルのデフォルトを解決
     const resolvedModelId = config.defaultOpenAIModelId ?? "gpt-4";
     const model: LanguageModelV1 = this.openai(resolvedModelId, {});
-    console.log(chalk.green("model: ", JSON.stringify(model)));
     const result = await model.doGenerate({
       inputFormat: "prompt",
       mode: { type: "regular" },
