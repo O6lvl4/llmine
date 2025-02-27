@@ -19,7 +19,7 @@ OpenAI や Azure OpenAI をプロンプト一発で簡単に呼び出し、そ�
 ### 1. リポジトリをクローン (またはソースをダウンロード)
 
 ```bash
-git clone https://github.com/yourname/llmine.git
+git clone https://github.com/O6lvl4/llmine.git
 cd llmine
 ```
 
