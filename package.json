@@ -2,14 +2,15 @@
   "name": "llmine",
   "version": "1.0.2",
   "description": "コマンドラインからLLMにアクセス",
-  "main": "dist/index.js",
+  "type": "module",
+  "main": "./dist/core/index.js",
   "bin": {
-    "llmine": "./dist/index.js"
+    "llmine": "./dist/cli/main.js"
   },
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
+    "build": "rm -rf dist && tsc",
+    "start": "node dist/cli/main.js",
+    "dev": "node --loader ts-node/esm src/cli/main.tsx",
     "prepare": "npm run build",
     "format": "prettier --write .",
     "bind-cli": "npm run build && npm link"
@@ -24,20 +25,29 @@
   "author": "o6lvl4",
   "license": "MIT",
   "dependencies": {
-    "@ai-sdk/azure": "^1.1.14",
-    "@ai-sdk/openai": "^1.1.14",
+    "@ai-sdk/amazon-bedrock": "^3.0.22",
+    "@ai-sdk/anthropic": "^2.0.17",
+    "@ai-sdk/azure": "^2.0.32",
+    "@ai-sdk/openai": "^2.0.32",
     "ai": "^4.1.46",
     "chalk": "^4.1.2",
     "commander": "^11.0.0",
     "figlet": "^1.6.0",
+    "ink": "^4.4.0",
+    "ink-select-input": "^5.0.0",
+    "ink-spinner": "^5.0.0",
+    "ink-text-input": "^5.0.1",
     "inquirer": "^8.2.5",
     "openai": "^4.0.0",
-    "ora": "^5.4.1"
+    "ora": "^5.4.1",
+    "react": "^18.3.1",
+    "zod": "^3.25.9"
   },
   "devDependencies": {
     "@types/figlet": "^1.5.6",
     "@types/inquirer": "^8.2.6",
     "@types/node": "^20.5.7",
+    "@types/react": "^18.3.0",
     "prettier": "^3.5.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
