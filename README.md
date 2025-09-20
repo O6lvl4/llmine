@@ -1,7 +1,7 @@
 # llmine
 
 <div align="center">
-    <img src="assets/llmine-logo.png" alt="llmine logo" width="400">
+    <img src="assets/llmine-logo.png" alt="llmine logo" width="600">
 </div>
 
 コマンドラインから LLM (ChatGPT など) にアクセスできる CLI ツールです。  
@@ -9,11 +9,14 @@ OpenAI や Azure OpenAI、Anthropic (Claude)、AWS Bedrock、Ollama など複数
 
 ## 特徴
 
-- **OpenAI / Azure OpenAI / Anthropic (Claude) / AWS Bedrock / Ollama** に対応  
-- プロンプトを直接コマンド引数に渡せるほか、パイプ経由での入力にも対応  
-- API キーや Azure のリソース情報などは対話形式で簡単に設定可能  
-- `llmine model` コマンドでプロバイダ+モデルのプロファイルを管理し、用途に応じて瞬時に切替  
-- Ink + React 製の CLI でリッチなインタラクティブ UI を実現  
+- **OpenAI / Azure OpenAI / Anthropic (Claude) / AWS Bedrock / Ollama** に対応
+- プロンプトを直接コマンド引数に渡せるほか、パイプ経由での入力にも対応
+- **パイプ機能の強化** - git diff などの大きな入力もスムーズに処理
+- **多言語対応** - 日本語/英語の切り替えが可能 (`llmine lang set [ja|en]`)
+- **Ollama連携** - ローカルLLMモデルをシームレスに利用可能
+- API キーや Azure のリソース情報などは対話形式で簡単に設定可能
+- `llmine model` コマンドでプロバイダ+モデルのプロファイルを管理し、用途に応じて瞬時に切替
+- Ink + React 製の CLI でリッチなインタラクティブ UI を実現
 - Node.js + TypeScript 製のシンプルな構成で拡張もしやすい
 
 ## インストール
@@ -183,9 +186,51 @@ llmine "Dockerfileのセキュリティレビューをして" \
 ```bash
 # ファイルの内容を読み込ませる場合など
 cat sample_prompt.txt | llmine
+
+# git diffを解析してコミットメッセージを生成
+git diff | llmine "コミットメッセージを提案して"
+
+# コードレビュー
+cat app.js | llmine "このコードをレビューして改善点を教えて"
+
+# ログ解析
+tail -n 100 error.log | llmine "エラーの原因を分析して"
 ```
 
-### 5. ヘルプ
+### 5. 言語設定
+
+CLIの表示言語を切り替えることができます：
+
+```bash
+# 現在の言語設定を確認
+llmine lang
+
+# 日本語に設定
+llmine lang set ja
+
+# 英語に設定
+llmine lang set en
+```
+
+### 6. Ollamaとの連携
+
+ローカルで動作するOllamaのモデルを利用できます：
+
+```bash
+# Ollamaが起動していることを確認
+ollama list
+
+# Ollamaプロバイダーを追加
+llmine provider add ollama
+
+# Ollamaモデルを使用
+llmine "質問" -p ollama
+
+# 特定のモデルを指定
+llmine "質問" -p ollama -m llama3.1
+```
+
+### 7. ヘルプ
 
 ヘルプは以下で表示されます。
 

@@ -290,18 +290,14 @@ class BedrockClient implements AIClient {
 }
 
 class OllamaClient implements AIClient {
-  private readonly openaiCompatible;
+  private readonly baseUrl: string;
   private readonly defaultModel?: string;
 
   constructor(baseUrl: string | undefined, defaultModel?: string) {
-    const normalized = (baseUrl?.trim() || "http://localhost:11434").replace(
+    this.baseUrl = (baseUrl?.trim() || "http://localhost:11434").replace(
       /\/$/,
       "",
     );
-    this.openaiCompatible = createOpenAI({
-      baseURL: `${normalized}/v1`,
-      apiKey: "ollama",
-    });
     this.defaultModel = defaultModel;
   }
 
@@ -310,19 +306,74 @@ class OllamaClient implements AIClient {
     temperature: number,
     modelId?: string,
   ): Promise<string> {
-    const prompt = convertMessagesToPrompt(messages);
-    const resolvedModelId = resolveModelId(
-      modelId,
-      this.defaultModel ?? config.defaultOllamaModelId,
-      PROVIDER_FALLBACK_MODELS.ollama,
-      "Ollama",
-    );
-    const model: LanguageModelV2 = this.openaiCompatible(resolvedModelId);
-    return generateText(model, prompt, temperature);
+    // First, check if Ollama is running and get available models
+    const availableModels = await this.listModels();
+
+    // Resolve model ID with available models
+    let resolvedModelId = modelId;
+    if (!resolvedModelId) {
+      resolvedModelId = this.defaultModel ?? config.defaultOllamaModelId;
+    }
+
+    // If still no model specified, use first available
+    if (!resolvedModelId && availableModels.length > 0) {
+      resolvedModelId = availableModels[0];
+    }
+
+    if (!resolvedModelId) {
+      throw new Error(
+        "No Ollama models available. Please pull a model first with 'ollama pull <model>'",
+      );
+    }
+
+    const requestBody = {
+      model: resolvedModelId,
+      messages: messages,
+      stream: false,
+      options: {
+        temperature: temperature ?? 0.7,
+      },
+    };
+
+    try {
+      const response = await fetch(`${this.baseUrl}/api/chat`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Ollama API error: ${response.status} - ${errorText}`);
+      }
+
+      const data = await response.json();
+      return data.message?.content || "";
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.includes("ECONNREFUSED") || error.message.includes("fetch failed")) {
+          throw new Error("Ollama is not running. Please start it with 'ollama serve'");
+        }
+        throw error;
+      }
+      throw new Error("Unknown error occurred while calling Ollama API");
+    }
   }
 
   async listModels(): Promise<string[]> {
-    return [...PROVIDER_SAMPLE_MODELS.ollama];
+    try {
+      const response = await fetch(`${this.baseUrl}/api/tags`);
+      if (!response.ok) {
+        return [];
+      }
+      const data = await response.json();
+      return data.models?.map((m: any) => m.name) || [];
+    } catch (error) {
+      // Return empty array if Ollama is not running
+      return [];
+    }
   }
 }
 
