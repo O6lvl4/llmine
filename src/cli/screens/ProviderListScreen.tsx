@@ -43,7 +43,7 @@ export const ProviderListScreen: React.FC = () => {
   }
 
   return (
-    <Box flexDirection="column" gap={1}>
+    <Box flexDirection="column">
       <Text color="cyan">登録済みプロバイダプロファイル</Text>
       {profiles.map((profile) => {
         const marker = current?.name === profile.name ? "*" : " ";
@@ -56,9 +56,11 @@ export const ProviderListScreen: React.FC = () => {
           </Text>
         );
       })}
-      <Text color="yellow">
-        * は現在のアクティブなプロバイダプロファイルです。
-      </Text>
+      <Box marginTop={1}>
+        <Text color="yellow">
+          * は現在のアクティブなプロバイダプロファイルです。
+        </Text>
+      </Box>
     </Box>
   );
 };

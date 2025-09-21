@@ -4,13 +4,12 @@ import { pkgVersion } from "../utils/packageInfo.js";
 
 export const HelpScreen: React.FC = () => {
   return (
-    <Box flexDirection="column" gap={1}>
+    <Box flexDirection="column">
       <Box flexDirection="column">
         <Text color="cyan">llmine v{pkgVersion}</Text>
         <Text>マルチプロバイダ対応の LLM CLI ツール</Text>
       </Box>
-
-      <Box flexDirection="column">
+      <Box marginTop={1} flexDirection="column">
         <Text color="yellow">使い方:</Text>
         <Text> llmine [options] "prompt"          プロンプトを送信</Text>
         <Text> llmine -- any text here          強制的にプロンプトとして送信</Text>
@@ -19,8 +18,7 @@ export const HelpScreen: React.FC = () => {
         <Text> llmine provider &lt;subcommand&gt;     プロバイダ管理</Text>
         <Text> llmine lang [set ja|en]          言語設定</Text>
       </Box>
-
-      <Box flexDirection="column">
+      <Box marginTop={1} flexDirection="column">
         <Text color="yellow">オプション:</Text>
         <Text> -P, --provider &lt;name&gt;   プロバイダを指定</Text>
         <Text> -m, --model &lt;model&gt;     モデル ID を指定</Text>
@@ -29,8 +27,7 @@ export const HelpScreen: React.FC = () => {
         <Text> -V, --version            バージョンを表示</Text>
         <Text> --                       以降をプロンプトとして扱う</Text>
       </Box>
-
-      <Box flexDirection="column">
+      <Box marginTop={1} flexDirection="column">
         <Text color="yellow">例:</Text>
         <Text> llmine "Write a haiku"           通常のプロンプト</Text>
         <Text> llmine -- models                 "models"をプロンプトとして送信</Text>

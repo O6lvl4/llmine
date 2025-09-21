@@ -23,7 +23,7 @@ export const ModelListScreen: React.FC = () => {
   }
 
   return (
-    <Box flexDirection="column" gap={1}>
+    <Box flexDirection="column">
       <Text color="cyan">登録済みモデルプロファイル</Text>
       {profiles.map((profile) => {
         const marker = active?.name === profile.name ? "*" : " ";
