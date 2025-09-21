@@ -4,10 +4,18 @@
     <img src="assets/llmine-logo.png" alt="llmine logo" width="600">
 </div>
 
+<div align="center">
+
+[![npm version](https://badge.fury.io/js/llmine.svg)](https://badge.fury.io/js/llmine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/node/v/llmine.svg)](https://nodejs.org)
+
 [日本語版 README はこちら](README.ja.md)
 
-A CLI tool that provides access to various LLMs (ChatGPT, Claude, etc.) from the command line.
-Easily call multiple providers including OpenAI, Azure OpenAI, Anthropic (Claude), AWS Bedrock, and Ollama with a single prompt and display results in your terminal.
+</div>
+
+A powerful CLI tool that provides unified access to various LLMs (ChatGPT, Claude, Gemini, etc.) from your terminal.
+Seamlessly interact with multiple AI providers including OpenAI, Azure OpenAI, Anthropic (Claude), AWS Bedrock, and Ollama through a single, elegant command-line interface.
 
 ## Features
 
@@ -23,31 +31,34 @@ Easily call multiple providers including OpenAI, Azure OpenAI, Anthropic (Claude
 
 ## Installation
 
-### 1. Clone the repository (or download source)
+### Install from npm (Recommended)
+
+```bash
+npm install -g llmine
+```
+
+### Install from Source
+
+#### 1. Clone the repository
 
 ```bash
 git clone https://github.com/O6lvl4/llmine.git
 cd llmine
 ```
 
-### 2. Quick Install (All-in-one)
+#### 2. Quick Install (All-in-one)
 
-Copy and run this command to complete installation:
-
-```bash
-npm install && \
-npm run build && \
-npm link && \
-chmod +x dist/cli/main.js && \
-nodenv rehash
-```
-
-Or simply:
 ```bash
 npm run setup
 ```
 
-### 3. Step-by-step Installation
+This will automatically:
+- Install dependencies
+- Build TypeScript sources
+- Register the `llmine` command globally
+- Set up execution permissions
+
+#### 3. Manual Installation
 
 If you prefer to run commands individually:
 
@@ -68,19 +79,34 @@ chmod +x dist/cli/main.js
 nodenv rehash
 ```
 
-This registers the `llmine` command in your PATH, making it available from any directory.
-If `npm link` doesn't work or isn't needed, you can use `npx llmine` format instead.
+## Quick Start
+
+```bash
+# Configure your first provider (interactive setup)
+llmine provider add openai
+
+# Send your first prompt
+llmine "What is the meaning of life?"
+
+# Pipe input for code review
+cat app.js | llmine "Review this code for improvements"
+```
 
 ## Usage
 
-### 1. Configure API Keys
+### 1. Configure Providers
 
-First, configure authentication for the providers you want to use (OpenAI / Azure / Anthropic / AWS Bedrock / Ollama).
-Running `llmine provider add <provider>` will prompt for required information interactively.
+Set up authentication for your preferred AI providers. The interactive setup will guide you through the process:
 
-### 1.1 Creating and Switching Model Profiles
+```bash
+llmine provider add <provider>
+```
 
-Create "model profiles" combining providers and models, and switch between them for different use cases.
+Supported providers:
+
+### 2. Model Profiles
+
+Create and manage model profiles to quickly switch between different configurations:
 
 ```bash
 # Add model profile (interactive)
@@ -158,7 +184,7 @@ llmine provider add ollama
 
 These settings are saved to `~/.llmine/config.json`.
 
-### 2. Check Registered Providers
+### 3. Managing Providers
 
 To view registered profiles:
 
@@ -166,7 +192,7 @@ To view registered profiles:
 llmine provider list
 ```
 
-### 3. List Available Models
+### 4. List Available Models
 
 For supported providers, you can display available models:
 
@@ -182,7 +208,7 @@ llmine models --provider bedrock
 llmine models --provider ollama
 ```
 
-### 4. Send Prompts
+### 5. Send Prompts
 
 #### Example 1: Direct prompt as argument
 
@@ -227,7 +253,7 @@ cat app.js | llmine "Review this code and suggest improvements"
 tail -n 100 error.log | llmine "Analyze error causes"
 ```
 
-### 5. Language Settings
+### 6. Language Settings
 
 Switch the CLI display language:
 
@@ -242,7 +268,7 @@ llmine lang set ja
 llmine lang set en
 ```
 
-### 6. Ollama Integration
+### 7. Ollama Integration (Local Models)
 
 Use locally running Ollama models:
 
@@ -260,7 +286,7 @@ llmine "question" -p ollama
 llmine "question" -p ollama -m llama3.1
 ```
 
-### 7. Help
+### 8. Getting Help
 
 Display help:
 
@@ -274,50 +300,73 @@ Or simply run `llmine` without arguments to show help automatically:
 llmine
 ```
 
-## Developer Information
+## Advanced Features
 
-### Directory Structure
+### System Prompts
+
+Customize AI behavior with system prompts:
 
 ```bash
-├── .gitignore
-├── LICENSE
-├── package.json
-├── package-lock.json
-├── src
-│   ├── core                   # Common logic (config/model management/clients)
-│   │   ├── aiClient.ts
-│   │   ├── config.ts
-│   │   ├── modelRegistry.ts
-│   │   └── providers.ts
-│   ├── cli                    # Ink CLI UI
-│   │   ├── app.tsx
-│   │   ├── main.tsx
-│   │   ├── parseArgs.ts
-│   │   ├── screens/
-│   │   └── utils/
-│   └── utils
-│       └── banner.ts          # Banner display
-└── ...
+# Set system context for specialized responses
+llmine "Explain quantum computing" \
+  --system "You are a physics professor explaining concepts to beginners"
 ```
 
-### Scripts
+### Streaming Responses
 
-- `npm run build`
-  Build TypeScript and output to `dist/core` and `dist/cli`.
-- `npm run dev`
-  Run Ink CLI in development mode via ts-node ESM loader.
-- `npm run format`
-  Format code with Prettier.
-- `npm run start`
-  Run built CLI (`dist/cli/main.js`).
-- `npm link`
-  Register `llmine` command globally.
-- `npm run setup`
-  Complete installation in one command.
+Get real-time streaming output for long responses:
 
-### Configuration File
+```bash
+llmine "Write a detailed essay about space exploration" --stream
+```
 
-Settings are saved to `~/.llmine/config.json`:
+### Output Formats
+
+Export responses in different formats:
+
+```bash
+# Save to file
+llmine "Generate a README template" > README.md
+
+# Copy to clipboard (macOS)
+llmine "Generate SQL query for user analytics" | pbcopy
+```
+
+## Development
+
+### Architecture
+
+```
+src/
+├── core/                      # Core business logic
+│   ├── aiClient.ts           # Unified AI client interface
+│   ├── config.ts             # Configuration management
+│   ├── modelRegistry.ts      # Model profile registry
+│   └── providers.ts          # Provider implementations
+├── cli/                       # Interactive CLI (Ink + React)
+│   ├── app.tsx               # Main application component
+│   ├── main.tsx              # CLI entry point
+│   ├── parseArgs.ts          # Argument parsing
+│   ├── screens/              # UI screens
+│   └── utils/                # CLI utilities
+└── utils/                     # Shared utilities
+    └── banner.ts             # ASCII art banner
+```
+
+### Development Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run build` | Compile TypeScript to JavaScript |
+| `npm run dev` | Run in development mode with hot reload |
+| `npm run format` | Format code with Prettier |
+| `npm run lint` | Run ESLint checks |
+| `npm run test` | Run test suite |
+| `npm run setup` | One-command installation |
+
+### Configuration
+
+All settings are stored in `~/.llmine/config.json`. You can edit this file directly or use the CLI commands:
 
 ```json
 {
@@ -346,10 +395,29 @@ Settings are saved to `~/.llmine/config.json`:
 }
 ```
 
-Parameter names correspond to source code, allowing direct editing if needed.
+You can directly edit this JSON file for advanced configuration. The CLI will validate your changes on next run.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/O6lvl4/llmine/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/O6lvl4/llmine/discussions)
 
 ## License
 
-[MIT License](./LICENSE)
+[MIT License](./LICENSE) - feel free to use this project for any purpose.
 
-This software is published under the MIT License. Please read the license terms carefully before use.
+## Acknowledgments
+
+- Built with [Ink](https://github.com/vadimdemedes/ink) for beautiful CLI interfaces
+- Powered by [TypeScript](https://www.typescriptlang.org/) for type safety
+- Thanks to all the AI providers for their amazing APIs

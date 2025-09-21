@@ -4,10 +4,18 @@
     <img src="assets/llmine-logo.png" alt="llmine logo" width="600">
 </div>
 
+<div align="center">
+
+[![npm version](https://badge.fury.io/js/llmine.svg)](https://badge.fury.io/js/llmine)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js Version](https://img.shields.io/node/v/llmine.svg)](https://nodejs.org)
+
 [English README](README.md)
 
-コマンドラインから LLM (ChatGPT など) にアクセスできる CLI ツールです。  
-OpenAI や Azure OpenAI、Anthropic (Claude)、AWS Bedrock、Ollama など複数のプロバイダをプロンプト一発で簡単に呼び出し、その結果を端末上に表示できます。
+</div>
+
+ターミナルから様々なLLM (ChatGPT、Claude、Gemini等) に統一的にアクセスできる強力なCLIツールです。
+OpenAI、Azure OpenAI、Anthropic (Claude)、AWS Bedrock、Ollamaなど複数のAIプロバイダを、エレガントな単一のコマンドラインインターフェースでシームレスに操作できます。
 
 ## 特徴
 
@@ -23,26 +31,34 @@ OpenAI や Azure OpenAI、Anthropic (Claude)、AWS Bedrock、Ollama など複数
 
 ## インストール
 
-### 1. リポジトリをクローン (またはソースをダウンロード)
+### npmからインストール（推奨）
+
+```bash
+npm install -g llmine
+```
+
+### ソースからインストール
+
+#### 1. リポジトリをクローン
 
 ```bash
 git clone https://github.com/O6lvl4/llmine.git
 cd llmine
 ```
 
-### 2. インストール（一括実行）
-
-以下のコマンドをコピーして実行すると、一括でインストールが完了します：
+#### 2. クイックインストール（一括実行）
 
 ```bash
-npm install && \
-npm run build && \
-npm link && \
-chmod +x dist/cli/main.js && \
-nodenv rehash
+npm run setup
 ```
 
-### 3. インストール（個別実行）
+このコマンドは自動的に以下を実行します：
+- 依存関係のインストール
+- TypeScriptのビルド
+- グローバルコマンドとして登録
+- 実行権限の設定
+
+#### 3. 手動インストール
 
 個別に実行する場合は以下の順番で：
 
@@ -63,19 +79,35 @@ chmod +x dist/cli/main.js
 nodenv rehash
 ```
 
-上記で `llmine` コマンドがパスに登録され、どのディレクトリからでも呼び出せるようになります。
-もし `npm link` がうまく動作しない場合や、不要な場合は `npx llmine` 形式で利用しても構いません。
+
+## クイックスタート
+
+```bash
+# 最初のプロバイダを設定（対話式セットアップ）
+llmine provider add openai
+
+# 最初のプロンプトを送信
+llmine "人生の意味は何ですか？"
+
+# コードレビューのためにパイプ入力
+cat app.js | llmine "このコードの改善点をレビューしてください"
+```
 
 ## 使い方
 
-### 1. APIキーを設定
+### 1. プロバイダの設定
 
-まずは使用したいプロバイダ (OpenAI / Azure / Anthropic / AWS Bedrock / Ollama など) の認証情報を設定します。  
-`llmine provider add <provider>` を実行すると、対話形式で必要な項目の入力を求められます。
+使用したいAIプロバイダの認証情報を設定します。対話式セットアップがプロセスをガイドします：
 
-### 1.1 モデルプロファイルの作成・切替
+```bash
+llmine provider add <provider>
+```
 
-プロバイダとモデルを組み合わせた「モデルプロファイル」を作成し、用途に応じて切り替えられます。
+サポートされているプロバイダ：
+
+### 2. モデルプロファイル
+
+モデルプロファイルを作成・管理して、異なる設定を素早く切り替えることができます：
 
 ```bash
 # モデルプロファイルを追加 (対話形式)
@@ -154,7 +186,7 @@ llmine provider add ollama
 
 これらを入力すると、`~/.llmine/config.json` に設定が保存されます。
 
-### 2. 登録済みプロバイダを確認
+### 3. プロバイダの管理
 
 登録済みのプロファイルを確認するには:
 
@@ -162,7 +194,7 @@ llmine provider add ollama
 llmine provider list
 ```
 
-### 3. モデルの一覧を確認
+### 4. 利用可能なモデルの一覧
 
 対応しているプロバイダの場合、利用可能なモデルの一覧を表示できます。
 
@@ -178,7 +210,7 @@ llmine models --provider bedrock
 llmine models --provider ollama
 ```
 
-### 4. 実際にプロンプトを送信してみる
+### 5. プロンプトの送信
 
 #### 例1: 引数でプロンプトを直接指定
 
@@ -223,7 +255,7 @@ cat app.js | llmine "このコードをレビューして改善点を教えて"
 tail -n 100 error.log | llmine "エラーの原因を分析して"
 ```
 
-### 5. 言語設定
+### 6. 言語設定
 
 CLIの表示言語を切り替えることができます：
 
@@ -238,7 +270,7 @@ llmine lang set ja
 llmine lang set en
 ```
 
-### 6. Ollamaとの連携
+### 7. Ollamaとの連携（ローカルモデル）
 
 ローカルで動作するOllamaのモデルを利用できます：
 
@@ -256,7 +288,7 @@ llmine "質問" -p ollama
 llmine "質問" -p ollama -m llama3.1
 ```
 
-### 7. ヘルプ
+### 8. ヘルプの表示
 
 ヘルプは以下で表示されます。
 
@@ -270,48 +302,73 @@ llmine help
 llmine
 ```
 
-## 開発者向け情報
+## 高度な機能
 
-### ディレクトリ構成
+### システムプロンプト
+
+システムプロンプトでAIの動作をカスタマイズ：
 
 ```bash
-├── .gitignore
-├── LICENSE
-├── package.json
-├── package-lock.json
-├── src
-│   ├── core                   # 共通ロジック (設定/モデル管理/クライアント)
-│   │   ├── aiClient.ts
-│   │   ├── config.ts
-│   │   ├── modelRegistry.ts
-│   │   └── providers.ts
-│   ├── cli                    # Ink による CLI UI
-│   │   ├── app.tsx
-│   │   ├── main.tsx
-│   │   ├── parseArgs.ts
-│   │   ├── screens/
-│   │   └── utils/
-│   └── utils
-│       └── banner.ts          # バナー表示用
-└── ...
+# 特殊な応答のためのシステムコンテキストを設定
+llmine "量子コンピューティングを説明して" \
+  --system "あなたは初心者に概念を説明する物理学の教授です"
 ```
 
-### スクリプト一覧
+### ストリーミング応答
 
-- `npm run build`  
-  TypeScript をビルドし、`dist/core` と `dist/cli` に出力します。
-- `npm run dev`  
-  `ts-node` の ESM ローダー経由で Ink CLI を開発モード実行します。
-- `npm run format`  
-  Prettier によるコード整形を行います。
-- `npm run start`  
-  ビルド済みの CLI (`dist/cli/main.js`) を実行します。
-- `npm link`  
-  グローバルに `llmine` コマンドを登録します。
+長い応答をリアルタイムでストリーミング出力：
 
-### 設定ファイル
+```bash
+llmine "宇宙探査について詳細なエッセイを書いて" --stream
+```
 
-`~/.llmine/config.json` に、以下のような内容が保存されます。
+### 出力フォーマット
+
+様々なフォーマットで応答をエクスポート：
+
+```bash
+# ファイルに保存
+llmine "READMEテンプレートを生成" > README.md
+
+# クリップボードにコピー（macOS）
+llmine "ユーザー分析用のSQLクエリを生成" | pbcopy
+```
+
+## 開発
+
+### アーキテクチャ
+
+```
+src/
+├── core/                      # コアビジネスロジック
+│   ├── aiClient.ts           # 統一AIクライアントインターフェース
+│   ├── config.ts             # 設定管理
+│   ├── modelRegistry.ts      # モデルプロファイルレジストリ
+│   └── providers.ts          # プロバイダ実装
+├── cli/                       # インタラクティブCLI (Ink + React)
+│   ├── app.tsx               # メインアプリケーションコンポーネント
+│   ├── main.tsx              # CLIエントリーポイント
+│   ├── parseArgs.ts          # 引数解析
+│   ├── screens/              # UIスクリーン
+│   └── utils/                # CLIユーティリティ
+└── utils/                     # 共有ユーティリティ
+    └── banner.ts             # ASCIIアートバナー
+```
+
+### 開発スクリプト
+
+| コマンド | 説明 |
+|---------|------|
+| `npm run build` | TypeScriptをJavaScriptにコンパイル |
+| `npm run dev` | ホットリロード付き開発モードで実行 |
+| `npm run format` | Prettierでコードをフォーマット |
+| `npm run lint` | ESLintチェックを実行 |
+| `npm run test` | テストスイートを実行 |
+| `npm run setup` | ワンコマンドインストール |
+
+### 設定
+
+すべての設定は `~/.llmine/config.json` に保存されます。このファイルを直接編集するか、CLIコマンドを使用できます：
 
 ```json
 {
@@ -340,10 +397,29 @@ llmine
 }
 ```
 
-一部パラメータの名称はソース側と対応しているため、直接編集も可能です。
+高度な設定のために、このJSONファイルを直接編集できます。次回実行時にCLIが変更を検証します。
+
+## コントリビューション
+
+貢献を歓迎します！お気軽にプルリクエストをお送りください。
+
+1. リポジトリをフォーク
+2. フィーチャーブランチを作成 (`git checkout -b feature/AmazingFeature`)
+3. 変更をコミット (`git commit -m 'Add some AmazingFeature'`)
+4. ブランチにプッシュ (`git push origin feature/AmazingFeature`)
+5. プルリクエストを開く
+
+## サポート
+
+- **Issues**: [GitHub Issues](https://github.com/O6lvl4/llmine/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/O6lvl4/llmine/discussions)
 
 ## ライセンス
 
-[MIT License](./LICENSE)
+[MIT License](./LICENSE) - このプロジェクトは自由に利用できます。
 
-本ソフトウェアは MIT License のもとで公開されています。ライセンス条文をよくお読みの上、ご利用ください。
+## 謝辞
+
+- 美しいCLIインターフェースのための[Ink](https://github.com/vadimdemedes/ink)
+- 型安全性のための[TypeScript](https://www.typescriptlang.org/)
+- 素晴らしいAPIを提供するすべてのAIプロバイダに感謝
