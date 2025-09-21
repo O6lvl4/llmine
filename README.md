@@ -190,6 +190,10 @@ llmine models --provider ollama
 # Uses active model profile's provider and model by default
 llmine "What's the weather forecast for tomorrow?"
 
+# Force prompt mode with -- separator (useful for reserved words)
+llmine -- models                      # Sends "models" as prompt, not command
+llmine -- list all files              # Sends entire text as prompt
+
 # Specify model, temperature, and provider
 llmine "List all US presidents" \
   --model gpt-3.5-turbo \

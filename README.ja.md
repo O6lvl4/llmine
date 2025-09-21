@@ -186,6 +186,10 @@ llmine models --provider ollama
 # デフォルトではアクティブなモデルプロファイルに設定されたプロバイダ・モデルが使われます。
 llmine "明日の天気はどうなりそう？"
 
+# -- セパレータで強制的にプロンプトとして扱う（予約語と重なる場合に便利）
+llmine -- models                      # "models"をプロンプトとして送信（コマンドではなく）
+llmine -- list all files              # テキスト全体をプロンプトとして送信
+
 # モデルや temperature、プロバイダを指定したい場合
 llmine "アメリカの歴代大統領を一覧で教えて" \
   --model gpt-3.5-turbo \

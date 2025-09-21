@@ -34,16 +34,33 @@ function buildPromptCommand(
 export function parseArgs(argv: string[], pipedInput?: string): ParsedCLI {
   const options: ParseOptions = {};
   const positional: string[] = [];
+  let forcePrompt = false;
 
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
+
+    // Handle -- separator for forcing prompt mode
+    if (arg === "--") {
+      forcePrompt = true;
+      // Collect all remaining args as prompt
+      const remainingArgs = argv.slice(i + 1);
+      if (remainingArgs.length > 0) {
+        const promptText = remainingArgs.join(" ");
+        const combined = pipedInput
+          ? `${promptText}\n\n${pipedInput}`
+          : promptText;
+        return { command: buildPromptCommand(combined, options) };
+      }
+      continue;
+    }
+
     if (arg === "--help" || arg === "-h") {
       return { command: { kind: "help" } };
     }
     if (arg === "--version" || arg === "-V") {
       return { command: { kind: "version" }, exitAfterRender: true };
     }
-    if (arg === "--provider" || arg === "-p") {
+    if (arg === "--provider" || arg === "-P") {
       const value = argv[i + 1];
       if (!value || value.startsWith("-")) {
         return {
