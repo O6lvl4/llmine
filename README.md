@@ -28,20 +28,40 @@ git clone https://github.com/O6lvl4/llmine.git
 cd llmine
 ```
 
-### 2. 依存関係をインストール
+### 2. インストール（一括実行）
+
+以下のコマンドをコピーして実行すると、一括でインストールが完了します：
 
 ```bash
+npm install && \
+npm run build && \
+npm link && \
+chmod +x dist/cli/main.js && \
+nodenv rehash
+```
+
+### 3. インストール（個別実行）
+
+個別に実行する場合は以下の順番で：
+
+```bash
+# 依存関係のインストール
 npm install
-```
 
-### 3. ビルド & CLI 登録
-
-```bash
+# TypeScriptのビルド
 npm run build
+
+# グローバルコマンドとして登録
 npm link
+
+# 実行権限の付与
+chmod +x dist/cli/main.js
+
+# nodenvを使用している場合はシムを更新
+nodenv rehash
 ```
 
-上記で `llmine` コマンドがパスに登録され、どのディレクトリからでも呼び出せるようになります。  
+上記で `llmine` コマンドがパスに登録され、どのディレクトリからでも呼び出せるようになります。
 もし `npm link` がうまく動作しない場合や、不要な場合は `npx llmine` 形式で利用しても構いません。
 
 ## 使い方

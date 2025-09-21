@@ -13,7 +13,10 @@
     "dev": "node --loader ts-node/esm src/cli/main.tsx",
     "prepare": "npm run build",
     "format": "prettier --write .",
-    "bind-cli": "npm run build && npm link"
+    "bind-cli": "npm run build && npm link",
+    "setup": "npm install && npm run build && npm link && chmod +x dist/cli/main.js && nodenv rehash",
+    "setup:global": "npm run setup",
+    "postinstall": "chmod +x dist/cli/main.js 2>/dev/null || true"
   },
   "keywords": [
     "cli",

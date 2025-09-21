@@ -27,6 +27,7 @@ export const PromptRunner: React.FC<PromptRunnerProps> = ({
   const [output, setOutput] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const { exit } = useApp();
+  const isOutputPiped = !process.stdout.isTTY;
 
   useEffect(() => {
     let cancelled = false;
@@ -62,12 +63,20 @@ export const PromptRunner: React.FC<PromptRunnerProps> = ({
         );
 
         if (cancelled) return;
-        setOutput(answer.trim() || "(回答が空でした)");
-        setState("success");
-        // Exit gracefully after displaying the result
-        setTimeout(() => {
-          exit();
-        }, 50);
+        const result = answer.trim() || "(回答が空でした)";
+
+        if (isOutputPiped) {
+          // When piped, output clean text to stdout and exit immediately
+          console.log(result);
+          process.exit(0);
+        } else {
+          setOutput(result);
+          setState("success");
+          // Exit gracefully after displaying the result
+          setTimeout(() => {
+            exit();
+          }, 50);
+        }
       } catch (err) {
         if (cancelled) return;
         setError(err instanceof Error ? err.message : String(err));
@@ -83,6 +92,10 @@ export const PromptRunner: React.FC<PromptRunnerProps> = ({
   }, [prompt, provider, model, temperature]);
 
   if (state === "loading") {
+    // Don't render spinner when output is piped
+    if (isOutputPiped) {
+      return null;
+    }
     return (
       <Box flexDirection="column">
         <Text>
@@ -96,6 +109,11 @@ export const PromptRunner: React.FC<PromptRunnerProps> = ({
   }
 
   if (state === "error") {
+    if (isOutputPiped) {
+      // Output error to stderr when piped
+      console.error(error);
+      process.exit(1);
+    }
     return (
       <Box flexDirection="column">
         <Text color="red">{t("error")}</Text>
