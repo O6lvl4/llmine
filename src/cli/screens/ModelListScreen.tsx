@@ -6,6 +6,7 @@ import {
   getCurrentModelProfile,
 } from "../../core/modelRegistry.js";
 import { PROVIDER_LABELS } from "../../core/providers.js";
+import { t } from "../../core/i18n.js";
 
 export const ModelListScreen: React.FC = () => {
   const profiles = listModelProfiles();
@@ -14,9 +15,9 @@ export const ModelListScreen: React.FC = () => {
   if (!profiles.length) {
     return (
       <Box flexDirection="column">
-        <Text color="yellow">モデルプロファイルがまだ登録されていません。</Text>
+        <Text color="yellow">{t("model.notConfigured")}</Text>
         <Text>
-          まずは `llmine model add` でプロファイルを作成してください。
+          `llmine model add` {t("model.add")}
         </Text>
       </Box>
     );
@@ -24,7 +25,7 @@ export const ModelListScreen: React.FC = () => {
 
   return (
     <Box flexDirection="column">
-      <Text color="cyan">登録済みモデルプロファイル</Text>
+      <Text color="cyan">{t("model.registeredProfiles")}</Text>
       {profiles.map((profile) => {
         const marker = active?.name === profile.name ? "*" : " ";
         const providerLabel =
@@ -34,7 +35,9 @@ export const ModelListScreen: React.FC = () => {
             {marker} {profile.name} → {providerLabel} / {profile.modelId}
             {profile.temperature !== undefined &&
               ` (temp=${profile.temperature})`}
-            {active?.name === profile.name ? "  ← 現在使用中" : ""}
+            {active?.name === profile.name
+              ? `  ← ${t("model.currentlyUsing")}`
+              : ""}
           </Text>
         );
       })}

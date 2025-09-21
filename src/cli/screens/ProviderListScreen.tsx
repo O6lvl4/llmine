@@ -7,6 +7,7 @@ import {
   getCurrentProviderProfile,
 } from "../../core/providerRegistry.js";
 import { ProviderProfile } from "../../core/config.js";
+import { t } from "../../core/i18n.js";
 
 function describeProfileDetails(profile: ProviderProfile): string {
   switch (profile.provider) {
@@ -32,11 +33,9 @@ export const ProviderListScreen: React.FC = () => {
   if (!profiles.length) {
     return (
       <Box flexDirection="column">
+        <Text color="yellow">{t("provider.notConfigured")}</Text>
         <Text color="yellow">
-          プロバイダプロファイルがまだ登録されていません。
-        </Text>
-        <Text color="yellow">
-          `llmine provider add` で設定を登録してください。
+          `llmine provider add` {t("provider.add")}
         </Text>
       </Box>
     );
@@ -44,7 +43,7 @@ export const ProviderListScreen: React.FC = () => {
 
   return (
     <Box flexDirection="column">
-      <Text color="cyan">登録済みプロバイダプロファイル</Text>
+      <Text color="cyan">{t("provider.registeredProfiles")}</Text>
       {profiles.map((profile) => {
         const marker = current?.name === profile.name ? "*" : " ";
         const label = PROVIDER_LABELS[profile.provider] ?? profile.provider;
@@ -52,14 +51,14 @@ export const ProviderListScreen: React.FC = () => {
           <Text key={profile.name}>
             {marker} {profile.name} → {label}
             {describeProfileDetails(profile)}
-            {current?.name === profile.name ? "  ← 現在使用中" : ""}
+            {current?.name === profile.name
+              ? `  ← ${t("provider.currentlyUsing")}`
+              : ""}
           </Text>
         );
       })}
       <Box marginTop={1}>
-        <Text color="yellow">
-          * は現在のアクティブなプロバイダプロファイルです。
-        </Text>
+        <Text color="yellow">{t("provider.activeIndicator")}</Text>
       </Box>
     </Box>
   );

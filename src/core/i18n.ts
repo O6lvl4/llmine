@@ -39,6 +39,10 @@ interface Messages {
     use: string;
     remove: string;
     current: string;
+    registeredProfiles: string;
+    currentlyUsing: string;
+    notConfigured: string;
+    activeIndicator: string;
   };
   model: {
     add: string;
@@ -46,6 +50,9 @@ interface Messages {
     show: string;
     use: string;
     remove: string;
+    registeredProfiles: string;
+    currentlyUsing: string;
+    notConfigured: string;
   };
   errors: {
     unsupportedProvider: string;
@@ -100,6 +107,10 @@ const messages: Record<Language, Messages> = {
       use: "プロバイダを使用",
       remove: "プロバイダを削除",
       current: "現在のプロバイダ",
+      registeredProfiles: "登録済みプロバイダプロファイル",
+      currentlyUsing: "現在使用中",
+      notConfigured: "プロバイダプロファイルがまだ登録されていません。",
+      activeIndicator: "* は現在のアクティブなプロバイダプロファイルです。",
     },
     model: {
       add: "モデルを追加",
@@ -107,6 +118,9 @@ const messages: Record<Language, Messages> = {
       show: "モデル詳細",
       use: "モデルを使用",
       remove: "モデルを削除",
+      registeredProfiles: "登録済みモデルプロファイル",
+      currentlyUsing: "現在使用中",
+      notConfigured: "モデルプロファイルがまだ登録されていません。",
     },
     errors: {
       unsupportedProvider: "サポートされていないプロバイダです",
@@ -159,6 +173,10 @@ const messages: Record<Language, Messages> = {
       use: "Use provider",
       remove: "Remove provider",
       current: "Current provider",
+      registeredProfiles: "Registered provider profiles",
+      currentlyUsing: "Currently using",
+      notConfigured: "No provider profiles configured yet.",
+      activeIndicator: "* indicates the active provider profile.",
     },
     model: {
       add: "Add model",
@@ -166,6 +184,9 @@ const messages: Record<Language, Messages> = {
       show: "Show model",
       use: "Use model",
       remove: "Remove model",
+      registeredProfiles: "Registered model profiles",
+      currentlyUsing: "Currently using",
+      notConfigured: "No model profiles configured yet.",
     },
     errors: {
       unsupportedProvider: "Unsupported provider",
