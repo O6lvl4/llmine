@@ -31,10 +31,7 @@ function buildPromptCommand(
   };
 }
 
-export function parseArgs(
-  argv: string[],
-  pipedInput?: string,
-): ParsedCLI {
+export function parseArgs(argv: string[], pipedInput?: string): ParsedCLI {
   const options: ParseOptions = {};
   const positional: string[] = [];
 
@@ -213,7 +210,8 @@ export function parseArgs(
       return {
         command: {
           kind: "unknown",
-          message: "`llmine keys` コマンドは廃止されました。`llmine provider` を利用してください。",
+          message:
+            "`llmine keys` コマンドは廃止されました。`llmine provider` を利用してください。",
         },
       };
     }
@@ -244,11 +242,12 @@ export function parseArgs(
       let combined: string;
       if (pipedInput && pipedInput.length > 0) {
         // Format based on content type
-        const separator = pipedInput.includes("diff --git") ||
-                         pipedInput.includes("+++") ||
-                         pipedInput.includes("---")
-                         ? "\n\n=== Input ===\n"
-                         : "\n\n";
+        const separator =
+          pipedInput.includes("diff --git") ||
+          pipedInput.includes("+++") ||
+          pipedInput.includes("---")
+            ? "\n\n=== Input ===\n"
+            : "\n\n";
         combined = `${promptParts}${separator}${pipedInput}`;
       } else {
         combined = promptParts;

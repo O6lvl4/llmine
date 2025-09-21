@@ -32,8 +32,12 @@ export const ProviderListScreen: React.FC = () => {
   if (!profiles.length) {
     return (
       <Box flexDirection="column">
-        <Text color="yellow">プロバイダプロファイルがまだ登録されていません。</Text>
-        <Text color="yellow">`llmine provider add` で設定を登録してください。</Text>
+        <Text color="yellow">
+          プロバイダプロファイルがまだ登録されていません。
+        </Text>
+        <Text color="yellow">
+          `llmine provider add` で設定を登録してください。
+        </Text>
       </Box>
     );
   }
@@ -52,7 +56,9 @@ export const ProviderListScreen: React.FC = () => {
           </Text>
         );
       })}
-      <Text color="yellow">* は現在のアクティブなプロバイダプロファイルです。</Text>
+      <Text color="yellow">
+        * は現在のアクティブなプロバイダプロファイルです。
+      </Text>
     </Box>
   );
 };

@@ -63,10 +63,12 @@ async function readPipedInput(): Promise<string | undefined> {
 
     // If we have piped input and a prompt command, display input info
     if (pipedInput && parsed.command.kind === "prompt") {
-      const lines = pipedInput.split('\n').length;
+      const lines = pipedInput.split("\n").length;
       const chars = pipedInput.length;
       if (lines > 10 || chars > 500) {
-        process.stderr.write(`📥 ${t("pipedInput")}: ${lines} ${t("lines")}, ${chars} ${t("chars")}\n`);
+        process.stderr.write(
+          `📥 ${t("pipedInput")}: ${lines} ${t("lines")}, ${chars} ${t("chars")}\n`,
+        );
       }
     }
 

@@ -8,7 +8,10 @@ export interface LanguageSetProps {
   onComplete: () => void;
 }
 
-export const LanguageSet: React.FC<LanguageSetProps> = ({ lang, onComplete }) => {
+export const LanguageSet: React.FC<LanguageSetProps> = ({
+  lang,
+  onComplete,
+}) => {
   useEffect(() => {
     const setLang = async () => {
       try {

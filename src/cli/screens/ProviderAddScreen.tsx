@@ -3,14 +3,8 @@ import { Box, Text } from "ink";
 import SelectInput from "ink-select-input";
 import TextInput from "ink-text-input";
 
-import {
-  ProviderType,
-  ProviderProfile,
-} from "../../core/config.js";
-import {
-  PROVIDER_LABELS,
-  SUPPORTED_PROVIDERS,
-} from "../../core/providers.js";
+import { ProviderType, ProviderProfile } from "../../core/config.js";
+import { PROVIDER_LABELS, SUPPORTED_PROVIDERS } from "../../core/providers.js";
 import {
   createProviderProfile,
   upsertProviderProfile,
@@ -74,8 +68,18 @@ const DEFAULT_FIELDS: FieldMap = {
   bedrock: [
     { key: "region", label: "AWS Bedrock リージョン" },
     { key: "accessKeyId", label: "Access Key ID (空欄可)", optional: true },
-    { key: "secretAccessKey", label: "Secret Access Key (空欄可)", optional: true, mask: "*" },
-    { key: "sessionToken", label: "Session Token (必要な場合のみ)", optional: true, mask: "*" },
+    {
+      key: "secretAccessKey",
+      label: "Secret Access Key (空欄可)",
+      optional: true,
+      mask: "*",
+    },
+    {
+      key: "sessionToken",
+      label: "Session Token (必要な場合のみ)",
+      optional: true,
+      mask: "*",
+    },
     { key: "defaultModel", label: "デフォルトモデル (空欄可)", optional: true },
   ],
   ollama: [
@@ -89,15 +93,23 @@ const DEFAULT_FIELDS: FieldMap = {
   ],
 };
 
-export const ProviderAddScreen: React.FC<ProviderAddScreenProps> = ({ provider }) => {
+export const ProviderAddScreen: React.FC<ProviderAddScreenProps> = ({
+  provider,
+}) => {
   const [step, setStep] = useState<Step>(provider ? "name" : "provider");
-  const [selectedProvider, setSelectedProvider] = useState<ProviderType | undefined>(provider);
-  const [name, setName] = useState<string>(provider ? `${provider}-profile` : "");
+  const [selectedProvider, setSelectedProvider] = useState<
+    ProviderType | undefined
+  >(provider);
+  const [name, setName] = useState<string>(
+    provider ? `${provider}-profile` : "",
+  );
   const [values, setValues] = useState<MutableValues>({});
   const [fieldIndex, setFieldIndex] = useState<number>(0);
   const [error, setError] = useState<string | null>(null);
   const [setCurrent, setSetCurrent] = useState<boolean>(true);
-  const [savedProfile, setSavedProfile] = useState<ProviderProfile | null>(null);
+  const [savedProfile, setSavedProfile] = useState<ProviderProfile | null>(
+    null,
+  );
 
   const providerItems: Array<SelectItem<ProviderType>> = useMemo(
     () =>
@@ -187,7 +199,9 @@ export const ProviderAddScreen: React.FC<ProviderAddScreenProps> = ({ provider }
     } else {
       return (
         <Box flexDirection="column">
-          <Text color="cyan">{PROVIDER_LABELS[selectedProvider] ?? selectedProvider} の設定</Text>
+          <Text color="cyan">
+            {PROVIDER_LABELS[selectedProvider] ?? selectedProvider} の設定
+          </Text>
           <Text>{field.label}:</Text>
           <TextInput
             value={values[field.key] ?? field.defaultValue ?? ""}
@@ -206,7 +220,9 @@ export const ProviderAddScreen: React.FC<ProviderAddScreenProps> = ({ provider }
               setFieldIndex((prev) => prev + 1);
             }}
           />
-          {field.optional && <Text color="yellow">空欄でスキップできます。</Text>}
+          {field.optional && (
+            <Text color="yellow">空欄でスキップできます。</Text>
+          )}
           {error && <Text color="red">{error}</Text>}
         </Box>
       );
@@ -216,7 +232,9 @@ export const ProviderAddScreen: React.FC<ProviderAddScreenProps> = ({ provider }
   if (step === "set-current") {
     return (
       <Box flexDirection="column">
-        <Text color="cyan">このプロファイルを現在のアクティブプロバイダに設定しますか?</Text>
+        <Text color="cyan">
+          このプロファイルを現在のアクティブプロバイダに設定しますか?
+        </Text>
         <SelectInput
           items={[
             { label: "はい", value: "yes" },
@@ -257,13 +275,14 @@ export const ProviderAddScreen: React.FC<ProviderAddScreenProps> = ({ provider }
   }
 
   if (step === "done" && savedProfile) {
-    const label = PROVIDER_LABELS[savedProfile.provider] ?? savedProfile.provider;
+    const label =
+      PROVIDER_LABELS[savedProfile.provider] ?? savedProfile.provider;
     return (
       <Box flexDirection="column" gap={1}>
-        <Text color="green">プロバイダプロファイル '{savedProfile.name}' を追加しました。</Text>
-        <Text>
-          種別: {label}
+        <Text color="green">
+          プロバイダプロファイル '{savedProfile.name}' を追加しました。
         </Text>
+        <Text>種別: {label}</Text>
         {savedProfile.provider === "azure" && (
           <Text>Deployment: {savedProfile.deployment}</Text>
         )}
@@ -279,7 +298,9 @@ export const ProviderAddScreen: React.FC<ProviderAddScreenProps> = ({ provider }
         {savedProfile.provider === "ollama" && (
           <Text>Host: {savedProfile.host}</Text>
         )}
-        {setCurrent && <Text color="green">現在のプロバイダに設定しました。</Text>}
+        {setCurrent && (
+          <Text color="green">現在のプロバイダに設定しました。</Text>
+        )}
       </Box>
     );
   }

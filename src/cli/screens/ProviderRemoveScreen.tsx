@@ -12,7 +12,9 @@ interface ProviderRemoveScreenProps {
 
 type State = "pending" | "success" | "error";
 
-export const ProviderRemoveScreen: React.FC<ProviderRemoveScreenProps> = ({ name }) => {
+export const ProviderRemoveScreen: React.FC<ProviderRemoveScreenProps> = ({
+  name,
+}) => {
   const [state, setState] = useState<State>("pending");
   const [error, setError] = useState<string | null>(null);
 
@@ -52,7 +54,9 @@ export const ProviderRemoveScreen: React.FC<ProviderRemoveScreenProps> = ({ name
 
   return (
     <Box>
-      <Text color="green">プロバイダプロファイル '{name}' を削除しました。</Text>
+      <Text color="green">
+        プロバイダプロファイル '{name}' を削除しました。
+      </Text>
     </Box>
   );
 };

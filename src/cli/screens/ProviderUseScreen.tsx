@@ -13,7 +13,9 @@ interface ProviderUseScreenProps {
 
 type State = "pending" | "success" | "error";
 
-export const ProviderUseScreen: React.FC<ProviderUseScreenProps> = ({ name }) => {
+export const ProviderUseScreen: React.FC<ProviderUseScreenProps> = ({
+  name,
+}) => {
   const [state, setState] = useState<State>("pending");
   const [message, setMessage] = useState<string>("");
 
@@ -28,7 +30,9 @@ export const ProviderUseScreen: React.FC<ProviderUseScreenProps> = ({ name }) =>
     try {
       setCurrentProviderProfile(profile.name);
       const label = PROVIDER_LABELS[profile.provider] ?? profile.provider;
-      setMessage(`${profile.name} (${label}) を現在のプロバイダに設定しました。`);
+      setMessage(
+        `${profile.name} (${label}) を現在のプロバイダに設定しました。`,
+      );
       setState("success");
     } catch (err) {
       setMessage(err instanceof Error ? err.message : String(err));

@@ -31,7 +31,7 @@ export async function saveSettings(settings: Settings): Promise<void> {
 }
 
 export async function getSetting<K extends keyof Settings>(
-  key: K
+  key: K,
 ): Promise<Settings[K] | undefined> {
   const settings = await loadSettings();
   return settings[key];
@@ -39,7 +39,7 @@ export async function getSetting<K extends keyof Settings>(
 
 export async function setSetting<K extends keyof Settings>(
   key: K,
-  value: Settings[K]
+  value: Settings[K],
 ): Promise<void> {
   const settings = await loadSettings();
   settings[key] = value;

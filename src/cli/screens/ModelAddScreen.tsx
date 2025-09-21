@@ -39,7 +39,9 @@ type Step =
   | "done"
   | "error";
 
-export const ModelAddScreen: React.FC<ModelAddScreenProps> = ({ presetName }) => {
+export const ModelAddScreen: React.FC<ModelAddScreenProps> = ({
+  presetName,
+}) => {
   const [step, setStep] = useState<Step>("name");
   const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState<string>(presetName ?? "");
@@ -70,13 +72,17 @@ export const ModelAddScreen: React.FC<ModelAddScreenProps> = ({ presetName }) =>
 
     async function loadModels() {
       try {
-        setLoadingMessage(`${PROVIDER_LABELS[targetProvider] ?? targetProvider} のモデルを取得中...`);
+        setLoadingMessage(
+          `${PROVIDER_LABELS[targetProvider] ?? targetProvider} のモデルを取得中...`,
+        );
         const client = createAIClient(targetProvider);
         if (client.listModels) {
           const fetched = await client.listModels();
           if (!cancelled) {
             const unique = Array.from(
-              new Set(fetched.concat(PROVIDER_SAMPLE_MODELS[targetProvider] ?? [])),
+              new Set(
+                fetched.concat(PROVIDER_SAMPLE_MODELS[targetProvider] ?? []),
+              ),
             );
             setModels(unique);
             setStep(unique.length ? "model-select" : "model-manual");
@@ -92,12 +98,12 @@ export const ModelAddScreen: React.FC<ModelAddScreenProps> = ({ presetName }) =>
         if (cancelled) return;
         setModels(PROVIDER_SAMPLE_MODELS[targetProvider] ?? []);
         setError(
-          err instanceof Error
-            ? err.message
-            : "モデル一覧の取得に失敗しました",
+          err instanceof Error ? err.message : "モデル一覧の取得に失敗しました",
         );
         setStep(
-          PROVIDER_SAMPLE_MODELS[targetProvider]?.length ? "model-select" : "model-manual",
+          PROVIDER_SAMPLE_MODELS[targetProvider]?.length
+            ? "model-select"
+            : "model-manual",
         );
       }
     }
@@ -158,7 +164,9 @@ export const ModelAddScreen: React.FC<ModelAddScreenProps> = ({ presetName }) =>
             const normalized = normalizeProvider(item.value);
             try {
               if (!normalized) {
-                throw new Error(`未対応のプロバイダです: ${String(item.value)}`);
+                throw new Error(
+                  `未対応のプロバイダです: ${String(item.value)}`,
+                );
               }
               validateProviderConfigured(normalized);
               setProvider(normalized);
@@ -183,7 +191,10 @@ export const ModelAddScreen: React.FC<ModelAddScreenProps> = ({ presetName }) =>
   }
 
   if (step === "model-select") {
-    const items: Array<SelectInputItem<string>> = models.map((m) => ({ label: m, value: m }));
+    const items: Array<SelectInputItem<string>> = models.map((m) => ({
+      label: m,
+      value: m,
+    }));
     items.push({ label: "手動で入力する", value: "__manual__" });
     return (
       <Box flexDirection="column">
@@ -259,7 +270,9 @@ export const ModelAddScreen: React.FC<ModelAddScreenProps> = ({ presetName }) =>
   if (step === "set-current") {
     return (
       <Box flexDirection="column">
-        <Text color="cyan">このプロファイルを現在のアクティブモデルに設定しますか?</Text>
+        <Text color="cyan">
+          このプロファイルを現在のアクティブモデルに設定しますか?
+        </Text>
         <SelectInput
           items={[
             { label: "はい", value: "yes" },
@@ -299,17 +312,16 @@ export const ModelAddScreen: React.FC<ModelAddScreenProps> = ({ presetName }) =>
   if (step === "done") {
     return (
       <Box flexDirection="column" gap={1}>
-        <Text color="green">
-          モデルプロファイル '{name}' を追加しました。
-        </Text>
+        <Text color="green">モデルプロファイル '{name}' を追加しました。</Text>
         <Text>
-          プロバイダ: {provider ? PROVIDER_LABELS[provider] ?? provider : "unknown"}
+          プロバイダ:{" "}
+          {provider ? (PROVIDER_LABELS[provider] ?? provider) : "unknown"}
         </Text>
         <Text>モデル: {modelId}</Text>
-        <Text>
-          temperature: {temperature ? Number(temperature) : "未設定"}
-        </Text>
-        {setCurrent && <Text color="green">現在のアクティブモデルとして設定しました。</Text>}
+        <Text>temperature: {temperature ? Number(temperature) : "未設定"}</Text>
+        {setCurrent && (
+          <Text color="green">現在のアクティブモデルとして設定しました。</Text>
+        )}
       </Box>
     );
   }

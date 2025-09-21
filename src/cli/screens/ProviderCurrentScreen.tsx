@@ -7,7 +7,8 @@ import { getCurrentProviderProfile } from "../../core/providerRegistry.js";
 
 export const ProviderCurrentScreen: React.FC = () => {
   const activeProfile = getCurrentProviderProfile();
-  const defaultProvider = activeProfile?.provider ?? config.defaultProvider ?? "openai";
+  const defaultProvider =
+    activeProfile?.provider ?? config.defaultProvider ?? "openai";
   const label = PROVIDER_LABELS[defaultProvider] ?? defaultProvider;
 
   return (
@@ -21,7 +22,10 @@ export const ProviderCurrentScreen: React.FC = () => {
           {describeProfile(activeProfile)}
         </>
       ) : (
-        <Text color="yellow">アクティブなプロバイダプロファイルが未設定です。`llmine provider add` で作成してください。</Text>
+        <Text color="yellow">
+          アクティブなプロバイダプロファイルが未設定です。`llmine provider add`
+          で作成してください。
+        </Text>
       )}
     </Box>
   );
@@ -32,7 +36,8 @@ function describeProfile(profile: ProviderProfile): React.ReactNode {
     case "openai":
       return (
         <Text>
-          API Key: {profile.apiKey ? `********${profile.apiKey.slice(-4)}` : "未設定"}
+          API Key:{" "}
+          {profile.apiKey ? `********${profile.apiKey.slice(-4)}` : "未設定"}
           {profile.defaultModel ? ` / model: ${profile.defaultModel}` : ""}
         </Text>
       );
@@ -45,7 +50,8 @@ function describeProfile(profile: ProviderProfile): React.ReactNode {
     case "anthropic":
       return (
         <Text>
-          API Key: {profile.apiKey ? `********${profile.apiKey.slice(-4)}` : "未設定"}
+          API Key:{" "}
+          {profile.apiKey ? `********${profile.apiKey.slice(-4)}` : "未設定"}
           {profile.defaultModel ? ` / model: ${profile.defaultModel}` : ""}
         </Text>
       );

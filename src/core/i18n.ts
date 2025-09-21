@@ -2,6 +2,7 @@ export type Language = "ja" | "en";
 
 interface Messages {
   waitingForResponse: string;
+  response: string;
   selectProvider: string;
   selectModel: string;
   enterApiKey: string;
@@ -62,6 +63,7 @@ interface Messages {
 const messages: Record<Language, Messages> = {
   ja: {
     waitingForResponse: "モデルからの応答を待っています...",
+    response: "回答",
     selectProvider: "プロバイダを選択",
     selectModel: "モデルを選択",
     enterApiKey: "APIキーを入力",
@@ -120,6 +122,7 @@ const messages: Record<Language, Messages> = {
   },
   en: {
     waitingForResponse: "Waiting for model response...",
+    response: "Response",
     selectProvider: "Select provider",
     selectModel: "Select model",
     enterApiKey: "Enter API key",
@@ -181,7 +184,8 @@ const messages: Record<Language, Messages> = {
 let currentLanguage: Language = "ja";
 
 export function detectLanguage(): Language {
-  const locale = process.env.LANG || process.env.LC_ALL || process.env.LC_MESSAGES || "";
+  const locale =
+    process.env.LANG || process.env.LC_ALL || process.env.LC_MESSAGES || "";
 
   // Check if locale starts with ja (Japanese)
   if (locale.toLowerCase().startsWith("ja")) {

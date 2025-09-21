@@ -41,7 +41,10 @@ export function findProviderProfilesByType(
   return ensureProfiles().filter((profile) => profile.provider === provider);
 }
 
-function updateTimestamps(profile: ProviderProfile, existing?: ProviderProfile): ProviderProfile {
+function updateTimestamps(
+  profile: ProviderProfile,
+  existing?: ProviderProfile,
+): ProviderProfile {
   const now = currentTimestamp();
   return {
     ...profile,
@@ -54,7 +57,10 @@ export function upsertProviderProfile(profile: ProviderProfile): void {
   const profiles = ensureProfiles();
   const normalizedName = normalizeName(profile.name);
   const index = profiles.findIndex((p) => p.name === normalizedName);
-  const enrichedProfile = updateTimestamps({ ...profile, name: normalizedName }, profiles[index]);
+  const enrichedProfile = updateTimestamps(
+    { ...profile, name: normalizedName },
+    profiles[index],
+  );
 
   if (index >= 0) {
     profiles[index] = enrichedProfile;
@@ -73,7 +79,9 @@ export function upsertProviderProfile(profile: ProviderProfile): void {
 export function removeProviderProfile(name: string): void {
   const normalizedName = normalizeName(name);
   const profiles = ensureProfiles();
-  const index = profiles.findIndex((profile) => profile.name === normalizedName);
+  const index = profiles.findIndex(
+    (profile) => profile.name === normalizedName,
+  );
   if (index < 0) {
     throw new Error(`プロバイダプロファイル '${name}' は存在しません。`);
   }
@@ -132,8 +140,14 @@ export function validateProviderProfile(profile: ProviderProfile): void {
       }
       break;
     case "azure":
-      if (!profile.resourceName.trim() || !profile.apiKey.trim() || !profile.deployment.trim()) {
-        throw new Error("Azure プロファイルには resource, apiKey, deployment が必要です。");
+      if (
+        !profile.resourceName.trim() ||
+        !profile.apiKey.trim() ||
+        !profile.deployment.trim()
+      ) {
+        throw new Error(
+          "Azure プロファイルには resource, apiKey, deployment が必要です。",
+        );
       }
       if (!profile.apiVersion.trim()) {
         throw new Error("Azure プロファイルには API バージョンが必要です。");
@@ -155,7 +169,9 @@ export function validateProviderProfile(profile: ProviderProfile): void {
       }
       break;
     default:
-      throw new Error(`未対応のプロバイダです: ${String((profile as ProviderProfileBase).provider)}`);
+      throw new Error(
+        `未対応のプロバイダです: ${String((profile as ProviderProfileBase).provider)}`,
+      );
   }
 }
 

@@ -22,7 +22,10 @@ import {
   PROVIDER_FALLBACK_MODELS,
   PROVIDER_SAMPLE_MODELS,
 } from "./providers.js";
-import { getProviderProfileForType, getCurrentProviderProfile } from "./providerRegistry.js";
+import {
+  getProviderProfileForType,
+  getCurrentProviderProfile,
+} from "./providerRegistry.js";
 
 export interface ChatMessage {
   role: "user" | "assistant";
@@ -99,7 +102,9 @@ function resolveModelId(
 }
 
 function resolveOpenAIProfile(): OpenAIProviderProfile | undefined {
-  return getProviderProfileForType("openai") as OpenAIProviderProfile | undefined;
+  return getProviderProfileForType("openai") as
+    | OpenAIProviderProfile
+    | undefined;
 }
 
 function resolveAzureProfile(): AzureProviderProfile | undefined {
@@ -107,15 +112,21 @@ function resolveAzureProfile(): AzureProviderProfile | undefined {
 }
 
 function resolveAnthropicProfile(): AnthropicProviderProfile | undefined {
-  return getProviderProfileForType("anthropic") as AnthropicProviderProfile | undefined;
+  return getProviderProfileForType("anthropic") as
+    | AnthropicProviderProfile
+    | undefined;
 }
 
 function resolveBedrockProfile(): BedrockProviderProfile | undefined {
-  return getProviderProfileForType("bedrock") as BedrockProviderProfile | undefined;
+  return getProviderProfileForType("bedrock") as
+    | BedrockProviderProfile
+    | undefined;
 }
 
 function resolveOllamaProfile(): OllamaProviderProfile | undefined {
-  return getProviderProfileForType("ollama") as OllamaProviderProfile | undefined;
+  return getProviderProfileForType("ollama") as
+    | OllamaProviderProfile
+    | undefined;
 }
 
 /**
@@ -147,9 +158,7 @@ class OpenAIClient implements AIClient {
   }
 
   async listModels(): Promise<string[]> {
-    return [
-      ...PROVIDER_SAMPLE_MODELS.openai,
-    ];
+    return [...PROVIDER_SAMPLE_MODELS.openai];
   }
 }
 
@@ -182,7 +191,9 @@ class AzureOpenAIClient implements AIClient {
     const prompt = convertMessagesToPrompt(messages);
     const deploymentId = resolveModelId(
       modelId,
-      this.defaultDeployment || config.azureDeploymentModelId || config.azureOpenAIDeployment,
+      this.defaultDeployment ||
+        config.azureDeploymentModelId ||
+        config.azureOpenAIDeployment,
       undefined,
       "Azure OpenAI",
     );
@@ -226,9 +237,7 @@ class AnthropicClient implements AIClient {
   }
 
   async listModels(): Promise<string[]> {
-    return [
-      ...PROVIDER_SAMPLE_MODELS.anthropic,
-    ];
+    return [...PROVIDER_SAMPLE_MODELS.anthropic];
   }
 }
 
@@ -283,9 +292,7 @@ class BedrockClient implements AIClient {
   }
 
   async listModels(): Promise<string[]> {
-    return [
-      ...PROVIDER_SAMPLE_MODELS.bedrock,
-    ];
+    return [...PROVIDER_SAMPLE_MODELS.bedrock];
   }
 }
 
@@ -353,8 +360,13 @@ class OllamaClient implements AIClient {
       return data.message?.content || "";
     } catch (error) {
       if (error instanceof Error) {
-        if (error.message.includes("ECONNREFUSED") || error.message.includes("fetch failed")) {
-          throw new Error("Ollama is not running. Please start it with 'ollama serve'");
+        if (
+          error.message.includes("ECONNREFUSED") ||
+          error.message.includes("fetch failed")
+        ) {
+          throw new Error(
+            "Ollama is not running. Please start it with 'ollama serve'",
+          );
         }
         throw error;
       }
@@ -393,14 +405,21 @@ export function createAIClient(provider?: ProviderType): AIClient {
           "OpenAI API Keyが設定されていません。`llmine provider add` で設定してください。",
         );
       }
-      return new OpenAIClient(apiKey!, profile?.defaultModel ?? config.defaultOpenAIModelId);
+      return new OpenAIClient(
+        apiKey!,
+        profile?.defaultModel ?? config.defaultOpenAIModelId,
+      );
     }
     case "azure": {
       const profile = resolveAzureProfile();
-      const resourceName = profile?.resourceName ?? config.azureOpenAIResourceName;
+      const resourceName =
+        profile?.resourceName ?? config.azureOpenAIResourceName;
       const apiKey = profile?.apiKey ?? config.azureOpenAIKey;
       const apiVersion = profile?.apiVersion ?? config.azureOpenAIVersion;
-      const deployment = profile?.deployment ?? config.azureDeploymentModelId ?? config.azureOpenAIDeployment;
+      const deployment =
+        profile?.deployment ??
+        config.azureDeploymentModelId ??
+        config.azureOpenAIDeployment;
       if (!resourceName || !apiKey || !apiVersion || !deployment) {
         throw new Error(
           "Azure OpenAI の設定が不足しています。`llmine provider add` で設定してください。",
@@ -421,7 +440,10 @@ export function createAIClient(provider?: ProviderType): AIClient {
           "Anthropic API Key が設定されていません。`llmine provider add` で設定してください。",
         );
       }
-      return new AnthropicClient(apiKey, profile?.defaultModel ?? config.defaultAnthropicModelId);
+      return new AnthropicClient(
+        apiKey,
+        profile?.defaultModel ?? config.defaultAnthropicModelId,
+      );
     }
     case "bedrock": {
       const profile = resolveBedrockProfile();
@@ -435,7 +457,8 @@ export function createAIClient(provider?: ProviderType): AIClient {
         region,
         {
           accessKeyId: profile?.accessKeyId ?? config.awsAccessKeyId,
-          secretAccessKey: profile?.secretAccessKey ?? config.awsSecretAccessKey,
+          secretAccessKey:
+            profile?.secretAccessKey ?? config.awsSecretAccessKey,
           sessionToken: profile?.sessionToken ?? config.awsSessionToken,
         },
         profile?.defaultModel ?? config.defaultBedrockModelId,
@@ -444,7 +467,10 @@ export function createAIClient(provider?: ProviderType): AIClient {
     case "ollama": {
       const profile = resolveOllamaProfile();
       const host = profile?.host ?? config.ollamaHost;
-      return new OllamaClient(host, profile?.defaultModel ?? config.defaultOllamaModelId);
+      return new OllamaClient(
+        host,
+        profile?.defaultModel ?? config.defaultOllamaModelId,
+      );
     }
     default: {
       throw new Error(`未対応のプロバイダです: ${String(resolvedProvider)}`);

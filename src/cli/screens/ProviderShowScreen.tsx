@@ -12,14 +12,22 @@ interface ProviderShowScreenProps {
   name?: string;
 }
 
-export const ProviderShowScreen: React.FC<ProviderShowScreenProps> = ({ name }) => {
-  const profile = name ? findProviderProfile(name) : getCurrentProviderProfile();
+export const ProviderShowScreen: React.FC<ProviderShowScreenProps> = ({
+  name,
+}) => {
+  const profile = name
+    ? findProviderProfile(name)
+    : getCurrentProviderProfile();
 
   if (!profile) {
     return (
       <Box flexDirection="column">
-        <Text color="red">指定されたプロバイダプロファイルが見つかりません。</Text>
-        <Text>`llmine provider list` で登録済みのプロファイルを確認してください。</Text>
+        <Text color="red">
+          指定されたプロバイダプロファイルが見つかりません。
+        </Text>
+        <Text>
+          `llmine provider list` で登録済みのプロファイルを確認してください。
+        </Text>
       </Box>
     );
   }
@@ -28,7 +36,8 @@ export const ProviderShowScreen: React.FC<ProviderShowScreenProps> = ({ name }) 
     <Box flexDirection="column" gap={1}>
       <Text color="cyan">{profile.name}</Text>
       <Text>
-        種別: {profile.provider} ({PROVIDER_LABELS[profile.provider] ?? profile.provider})
+        種別: {profile.provider} (
+        {PROVIDER_LABELS[profile.provider] ?? profile.provider})
       </Text>
       {renderDetails(profile)}
       {profile.description && <Text>メモ: {profile.description}</Text>}

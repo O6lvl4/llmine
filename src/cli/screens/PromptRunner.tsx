@@ -36,17 +36,21 @@ export const PromptRunner: React.FC<PromptRunnerProps> = ({
         const activeProfile = getCurrentModelProfile();
         const inferredProvider = provider
           ? provider
-          : activeProfile?.provider ?? config.defaultProvider ?? "openai";
+          : (activeProfile?.provider ?? config.defaultProvider ?? "openai");
 
         const normalized = normalizeProvider(inferredProvider);
         if (!normalized) {
-          throw new Error(`${t("errors.unsupportedProvider")}: ${String(inferredProvider)}`);
+          throw new Error(
+            `${t("errors.unsupportedProvider")}: ${String(inferredProvider)}`,
+          );
         }
 
         const aiClient = createAIClient(normalized);
 
-        const resolvedTemperature = temperature ?? activeProfile?.temperature ?? 0.7;
-        const resolvedModel = model ??
+        const resolvedTemperature =
+          temperature ?? activeProfile?.temperature ?? 0.7;
+        const resolvedModel =
+          model ??
           (activeProfile && activeProfile.provider === normalized
             ? activeProfile.modelId
             : undefined);
@@ -103,7 +107,7 @@ export const PromptRunner: React.FC<PromptRunnerProps> = ({
   return (
     <Box flexDirection="column" gap={1}>
       <Box flexDirection="column">
-        <Text color="green">回答:</Text>
+        <Text color="green">{t("response")}:</Text>
         <Text>{output}</Text>
       </Box>
     </Box>

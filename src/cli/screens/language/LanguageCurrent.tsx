@@ -8,7 +8,9 @@ export const LanguageCurrent: React.FC = () => {
 
   return (
     <Box flexDirection="column">
-      <Text>Current language: <Text color="cyan">{langDisplay}</Text></Text>
+      <Text>
+        Current language: <Text color="cyan">{langDisplay}</Text>
+      </Text>
       <Text dimColor>To change: llmine lang set [ja|en]</Text>
     </Box>
   );

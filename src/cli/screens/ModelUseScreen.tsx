@@ -50,7 +50,9 @@ export const ModelUseScreen: React.FC<ModelUseScreenProps> = ({ name }) => {
 
   return (
     <Box flexDirection="column">
-      <Text color="green">'{name}' を現在のアクティブモデルに設定しました。</Text>
+      <Text color="green">
+        '{name}' を現在のアクティブモデルに設定しました。
+      </Text>
       <Text>
         {providerLabel} / {modelId}
       </Text>

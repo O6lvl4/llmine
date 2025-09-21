@@ -153,7 +153,9 @@ function migrateLegacyProviders(config: Config): boolean {
     mutated = true;
   }
 
-  const existingNames = new Set(config.providerProfiles.map((profile) => profile.name));
+  const existingNames = new Set(
+    config.providerProfiles.map((profile) => profile.name),
+  );
 
   const addProfile = (profile: ProviderProfile) => {
     if (existingNames.has(profile.name)) {
@@ -187,9 +189,11 @@ function migrateLegacyProviders(config: Config): boolean {
       provider: "azure",
       resourceName: config.azureOpenAIResourceName,
       apiKey: config.azureOpenAIKey,
-      deployment: config.azureDeploymentModelId || config.azureOpenAIDeployment || "",
+      deployment:
+        config.azureDeploymentModelId || config.azureOpenAIDeployment || "",
       apiVersion: config.azureOpenAIVersion || "2024-10-01-preview",
-      defaultModel: config.azureDeploymentModelId || config.azureOpenAIDeployment,
+      defaultModel:
+        config.azureDeploymentModelId || config.azureOpenAIDeployment,
     });
   }
 

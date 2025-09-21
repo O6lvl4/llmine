@@ -1,11 +1,6 @@
 import chalk from "chalk";
 
-import {
-  config,
-  saveConfig,
-  ProviderType,
-  ModelProfile,
-} from "./config.js";
+import { config, saveConfig, ProviderType, ModelProfile } from "./config.js";
 import {
   PROVIDER_FALLBACK_MODELS,
   PROVIDER_LABELS,
@@ -91,10 +86,7 @@ function legacyFallbackModel(): ModelProfile | undefined {
 function resolveDefaultModelId(provider: ProviderType): string | undefined {
   switch (provider) {
     case "openai":
-      return (
-        config.defaultOpenAIModelId ||
-        PROVIDER_FALLBACK_MODELS.openai
-      );
+      return config.defaultOpenAIModelId || PROVIDER_FALLBACK_MODELS.openai;
     case "azure":
       return (
         config.azureDeploymentModelId ||
@@ -103,19 +95,12 @@ function resolveDefaultModelId(provider: ProviderType): string | undefined {
       );
     case "anthropic":
       return (
-        config.defaultAnthropicModelId ||
-        PROVIDER_FALLBACK_MODELS.anthropic
+        config.defaultAnthropicModelId || PROVIDER_FALLBACK_MODELS.anthropic
       );
     case "bedrock":
-      return (
-        config.defaultBedrockModelId ||
-        PROVIDER_FALLBACK_MODELS.bedrock
-      );
+      return config.defaultBedrockModelId || PROVIDER_FALLBACK_MODELS.bedrock;
     case "ollama":
-      return (
-        config.defaultOllamaModelId ||
-        PROVIDER_FALLBACK_MODELS.ollama
-      );
+      return config.defaultOllamaModelId || PROVIDER_FALLBACK_MODELS.ollama;
     default:
       return undefined;
   }

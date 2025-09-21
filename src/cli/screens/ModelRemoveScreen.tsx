@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Box, Text } from "ink";
 
-import { removeModelProfile, findModelProfile } from "../../core/modelRegistry.js";
+import {
+  removeModelProfile,
+  findModelProfile,
+} from "../../core/modelRegistry.js";
 
 interface ModelRemoveScreenProps {
   name: string;
@@ -9,7 +12,9 @@ interface ModelRemoveScreenProps {
 
 type State = "pending" | "success" | "error";
 
-export const ModelRemoveScreen: React.FC<ModelRemoveScreenProps> = ({ name }) => {
+export const ModelRemoveScreen: React.FC<ModelRemoveScreenProps> = ({
+  name,
+}) => {
   const [state, setState] = useState<State>("pending");
   const [error, setError] = useState<string | null>(null);
 

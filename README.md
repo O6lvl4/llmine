@@ -97,10 +97,10 @@ llmine provider add openai
 llmine provider add azure
 ```
 
-- Azure OpenAI Resource Name（例：`myazureopenai123`）  
-- Azure OpenAI API Key  
-- Azure OpenAI Deployment Name（例：`gpt-35-test`）  
-- Azure OpenAI API Version（例：`2024-05-01-preview` など）  
+- Azure OpenAI Resource Name（例：`myazureopenai123`）
+- Azure OpenAI API Key
+- Azure OpenAI Deployment Name（例：`gpt-35-test`）
+- Azure OpenAI API Version（例：`2024-05-01-preview` など）
 
 #### Anthropic (Claude)
 
@@ -108,8 +108,8 @@ llmine provider add azure
 llmine provider add anthropic
 ```
 
-- Anthropic API Key (例: `sk-ant-api03-...`)  
-- 任意で既定の Claude モデル ID（例: `claude-3-5-sonnet-latest`）  
+- Anthropic API Key (例: `sk-ant-api03-...`)
+- 任意で既定の Claude モデル ID（例: `claude-3-5-sonnet-latest`）
 
 #### AWS Bedrock
 
@@ -117,9 +117,9 @@ llmine provider add anthropic
 llmine provider add bedrock
 ```
 
-- 利用するリージョン（例: `us-east-1`）  
-- 必要に応じて AWS Access Key / Secret (空欄の場合は環境変数や IAM ロールを使用)  
-- 任意で既定のモデル ID（例: `anthropic.claude-3-5-sonnet-20241022-v1:0`）  
+- 利用するリージョン（例: `us-east-1`）
+- 必要に応じて AWS Access Key / Secret (空欄の場合は環境変数や IAM ロールを使用)
+- 任意で既定のモデル ID（例: `anthropic.claude-3-5-sonnet-20241022-v1:0`）
 
 #### Ollama
 
@@ -127,8 +127,8 @@ llmine provider add bedrock
 llmine provider add ollama
 ```
 
-- 接続先ホスト (デフォルト: `http://localhost:11434`)  
-- 任意で既定のローカルモデル ID（例: `llama3.1`）  
+- 接続先ホスト (デフォルト: `http://localhost:11434`)
+- 任意で既定のローカルモデル ID（例: `llama3.1`）
 
 これらを入力すると、`~/.llmine/config.json` に設定が保存されます。
 
@@ -318,6 +318,6 @@ llmine
 
 ## ライセンス
 
-[MIT License](./LICENSE)  
+[MIT License](./LICENSE)
 
 本ソフトウェアは MIT License のもとで公開されています。ライセンス条文をよくお読みの上、ご利用ください。

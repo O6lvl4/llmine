@@ -12,28 +12,28 @@ export const HelpScreen: React.FC = () => {
 
       <Box flexDirection="column">
         <Text color="yellow">使い方:</Text>
-        <Text>  llmine [options] [prompt]</Text>
-        <Text>  llmine model &lt;subcommand&gt;</Text>
-        <Text>  llmine provider &lt;subcommand&gt;</Text>
+        <Text> llmine [options] [prompt]</Text>
+        <Text> llmine model &lt;subcommand&gt;</Text>
+        <Text> llmine provider &lt;subcommand&gt;</Text>
       </Box>
 
       <Box flexDirection="column">
         <Text color="yellow">オプション:</Text>
-        <Text>  -p, --provider &lt;name&gt;    プロバイダを指定</Text>
-        <Text>  -m, --model &lt;model&gt;      モデル ID を指定</Text>
-        <Text>  -t, --temperature &lt;num&gt;  温度 (0-2)</Text>
-        <Text>  -h, --help               このヘルプを表示</Text>
-        <Text>  -V, --version            バージョンを表示</Text>
+        <Text> -p, --provider &lt;name&gt; プロバイダを指定</Text>
+        <Text> -m, --model &lt;model&gt; モデル ID を指定</Text>
+        <Text> -t, --temperature &lt;num&gt; 温度 (0-2)</Text>
+        <Text> -h, --help このヘルプを表示</Text>
+        <Text> -V, --version バージョンを表示</Text>
       </Box>
 
       <Box flexDirection="column">
         <Text color="yellow">代表的なコマンド:</Text>
-        <Text>  llmine "Write a haiku"</Text>
-        <Text>  llmine model add</Text>
-        <Text>  llmine model list</Text>
-        <Text>  llmine model use openai-dev</Text>
-        <Text>  llmine provider add openai</Text>
-        <Text>  llmine provider list</Text>
+        <Text> llmine "Write a haiku"</Text>
+        <Text> llmine model add</Text>
+        <Text> llmine model list</Text>
+        <Text> llmine model use openai-dev</Text>
+        <Text> llmine provider add openai</Text>
+        <Text> llmine provider list</Text>
       </Box>
     </Box>
   );
