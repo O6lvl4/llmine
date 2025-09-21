@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Text } from "ink";
+import { Box, Text, useApp } from "ink";
 import Spinner from "ink-spinner";
 
 import { createAIClient } from "../../core/aiClient.js";
@@ -26,6 +26,7 @@ export const PromptRunner: React.FC<PromptRunnerProps> = ({
   const [state, setState] = useState<RunnerState>("loading");
   const [output, setOutput] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const { exit } = useApp();
 
   useEffect(() => {
     let cancelled = false;
@@ -59,6 +60,10 @@ export const PromptRunner: React.FC<PromptRunnerProps> = ({
         if (cancelled) return;
         setOutput(answer.trim() || "(回答が空でした)");
         setState("success");
+        // Exit gracefully after displaying the result
+        setTimeout(() => {
+          exit();
+        }, 50);
       } catch (err) {
         if (cancelled) return;
         setError(err instanceof Error ? err.message : String(err));
