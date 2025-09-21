@@ -98,7 +98,12 @@ export function removeProviderProfile(name: string): void {
   if (normalizedName === "openai-default" && config.openaiApiKey) {
     delete config.openaiApiKey;
     delete config.defaultOpenAIModelId;
-  } else if (normalizedName === "azure-default" && config.azureResourceName) {
+  } else if (normalizedName === "azure-default" && (config.azureOpenAIResourceName || config.azureResourceName)) {
+    delete config.azureOpenAIResourceName;
+    delete config.azureOpenAIKey;
+    delete config.azureDeploymentModelId;
+    delete config.azureOpenAIVersion;
+    delete config.azureOpenAIDeployment;
     delete config.azureResourceName;
     delete config.azureApiKey;
     delete config.azureDeploymentName;
@@ -116,6 +121,10 @@ export function removeProviderProfile(name: string): void {
   } else if (normalizedName === "ollama-default" && config.ollamaHost) {
     delete config.ollamaHost;
     delete config.defaultOllamaModelId;
+  } else if (normalizedName === "vertex-default" && config.vertexProjectId) {
+    delete config.vertexProjectId;
+    delete config.vertexLocation;
+    delete config.defaultVertexModelId;
   }
 
   saveConfig(config);
