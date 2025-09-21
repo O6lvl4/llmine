@@ -18,6 +18,8 @@ import { ProviderRemoveScreen } from "./screens/ProviderRemoveScreen.js";
 import { ProviderCurrentScreen } from "./screens/ProviderCurrentScreen.js";
 import { LanguageSet } from "./screens/language/LanguageSet.js";
 import { LanguageCurrent } from "./screens/language/LanguageCurrent.js";
+import { ModelsListScreen } from "./screens/ModelsListScreen.js";
+import { PromptInteractive } from "./screens/PromptInteractive.js";
 import { useApp } from "ink";
 
 interface AppProps {
@@ -39,6 +41,8 @@ export const App: React.FC<AppProps> = ({ command }) => {
           temperature={command.temperature}
         />
       );
+    case "prompt-interactive":
+      return <PromptInteractive />;
     case "model-home":
       return <ModelHomeScreen />;
     case "model-list":
@@ -69,6 +73,8 @@ export const App: React.FC<AppProps> = ({ command }) => {
       return <LanguageSet lang={command.lang} onComplete={exit} />;
     case "language-current":
       return <LanguageCurrent />;
+    case "models-list":
+      return <ModelsListScreen provider={command.provider} />;
     case "unknown":
       return <ErrorScreen message={command.message} />;
     case "version":

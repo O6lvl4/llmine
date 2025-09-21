@@ -103,7 +103,8 @@ export function parseArgs(argv: string[], pipedInput?: string): ParsedCLI {
       // When only piped input, use it as the prompt
       return { command: buildPromptCommand(pipedInput, options) };
     }
-    return { command: { kind: "help" } };
+    // If no arguments and no pipe, show interactive prompt
+    return { command: { kind: "prompt-interactive" } };
   }
 
   const [command, ...rest] = positional;
@@ -205,6 +206,15 @@ export function parseArgs(argv: string[], pipedInput?: string): ParsedCLI {
             },
           };
       }
+    }
+    case "models": {
+      // Support "models" as a subcommand to list available models
+      return {
+        command: {
+          kind: "models-list",
+          provider: options.provider ? normalizeProvider(options.provider) : undefined
+        }
+      };
     }
     case "keys": {
       return {

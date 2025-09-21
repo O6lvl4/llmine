@@ -33,11 +33,22 @@ export type LanguageCommand =
   | { kind: "language-set"; lang: "ja" | "en" }
   | { kind: "language-current" };
 
+export type ModelsListCommand = {
+  kind: "models-list";
+  provider?: ProviderType;
+};
+
+export type PromptInteractiveCommand = {
+  kind: "prompt-interactive";
+};
+
 export type CLICommand =
   | PromptCommand
+  | PromptInteractiveCommand
   | ModelCommand
   | ProviderCommand
   | LanguageCommand
+  | ModelsListCommand
   | HelpCommand
   | VersionCommand
   | UnknownCommand;
