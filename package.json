@@ -1,6 +1,6 @@
 {
   "name": "llmine",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "コマンドラインからLLMにアクセス",
   "type": "module",
   "main": "./dist/core/index.js",
@@ -11,6 +11,9 @@
     "build": "rm -rf dist && tsc",
     "start": "node dist/cli/main.js",
     "dev": "node --loader ts-node/esm src/cli/main.tsx",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
     "prepare": "npm run build",
     "format": "prettier --write .",
     "bind-cli": "npm run build && npm link",
@@ -51,8 +54,12 @@
     "@types/inquirer": "^8.2.6",
     "@types/node": "^20.5.7",
     "@types/react": "^18.3.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/ui": "^3.2.4",
+    "ink-testing-library": "^4.0.0",
     "prettier": "^3.5.2",
     "ts-node": "^10.9.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vitest": "^3.2.4"
   }
 }

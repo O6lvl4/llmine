@@ -85,11 +85,37 @@ export function removeProviderProfile(name: string): void {
   if (index < 0) {
     throw new Error(`プロバイダプロファイル '${name}' は存在しません。`);
   }
+
+  const removedProfile = profiles[index];
   profiles.splice(index, 1);
 
   if (config.currentProviderProfile === normalizedName) {
     config.currentProviderProfile = profiles[0]?.name;
     config.defaultProvider = profiles[0]?.provider;
+  }
+
+  // Clean up legacy config if removing a default profile
+  if (normalizedName === "openai-default" && config.openaiApiKey) {
+    delete config.openaiApiKey;
+    delete config.defaultOpenAIModelId;
+  } else if (normalizedName === "azure-default" && config.azureResourceName) {
+    delete config.azureResourceName;
+    delete config.azureApiKey;
+    delete config.azureDeploymentName;
+    delete config.azureApiVersion;
+    delete config.defaultAzureModelId;
+  } else if (normalizedName === "anthropic-default" && config.anthropicApiKey) {
+    delete config.anthropicApiKey;
+    delete config.defaultAnthropicModelId;
+  } else if (normalizedName === "bedrock-default" && config.awsRegion) {
+    delete config.awsRegion;
+    delete config.awsAccessKeyId;
+    delete config.awsSecretAccessKey;
+    delete config.awsSessionToken;
+    delete config.defaultBedrockModelId;
+  } else if (normalizedName === "ollama-default" && config.ollamaHost) {
+    delete config.ollamaHost;
+    delete config.defaultOllamaModelId;
   }
 
   saveConfig(config);

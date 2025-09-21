@@ -393,8 +393,8 @@ class OllamaClient implements AIClient {
  * 設定ファイルやオプションからプロバイダを判定し、
  * 適切な AIClient を生成するユーティリティ関数
  */
-export function createAIClient(provider?: ProviderType): AIClient {
-  const resolvedProvider = provider ?? config.defaultProvider ?? "openai";
+export function createAIClient(provider: ProviderType): AIClient {
+  const resolvedProvider = provider;
 
   switch (resolvedProvider) {
     case "openai": {
