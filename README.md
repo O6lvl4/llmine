@@ -4,33 +4,35 @@
     <img src="assets/llmine-logo.png" alt="llmine logo" width="600">
 </div>
 
-コマンドラインから LLM (ChatGPT など) にアクセスできる CLI ツールです。  
-OpenAI や Azure OpenAI、Anthropic (Claude)、AWS Bedrock、Ollama など複数のプロバイダをプロンプト一発で簡単に呼び出し、その結果を端末上に表示できます。
+[日本語版 README はこちら](README.ja.md)
 
-## 特徴
+A CLI tool that provides access to various LLMs (ChatGPT, Claude, etc.) from the command line.
+Easily call multiple providers including OpenAI, Azure OpenAI, Anthropic (Claude), AWS Bedrock, and Ollama with a single prompt and display results in your terminal.
 
-- **OpenAI / Azure OpenAI / Anthropic (Claude) / AWS Bedrock / Ollama** に対応
-- プロンプトを直接コマンド引数に渡せるほか、パイプ経由での入力にも対応
-- **パイプ機能の強化** - git diff などの大きな入力もスムーズに処理
-- **多言語対応** - 日本語/英語の切り替えが可能 (`llmine lang set [ja|en]`)
-- **Ollama連携** - ローカルLLMモデルをシームレスに利用可能
-- API キーや Azure のリソース情報などは対話形式で簡単に設定可能
-- `llmine model` コマンドでプロバイダ+モデルのプロファイルを管理し、用途に応じて瞬時に切替
-- Ink + React 製の CLI でリッチなインタラクティブ UI を実現
-- Node.js + TypeScript 製のシンプルな構成で拡張もしやすい
+## Features
 
-## インストール
+- Support for **OpenAI / Azure OpenAI / Anthropic (Claude) / AWS Bedrock / Ollama**
+- Direct command-line arguments or pipe input support
+- **Enhanced pipe functionality** - Smooth handling of large inputs like git diffs
+- **Multi-language support** - Switch between Japanese/English (`llmine lang set [ja|en]`)
+- **Ollama integration** - Seamless use of local LLM models
+- Interactive configuration for API keys and Azure resources
+- Manage provider+model profiles with `llmine model` command for quick switching
+- Rich interactive CLI UI built with Ink + React
+- Simple architecture with Node.js + TypeScript for easy extension
 
-### 1. リポジトリをクローン (またはソースをダウンロード)
+## Installation
+
+### 1. Clone the repository (or download source)
 
 ```bash
 git clone https://github.com/O6lvl4/llmine.git
 cd llmine
 ```
 
-### 2. インストール（一括実行）
+### 2. Quick Install (All-in-one)
 
-以下のコマンドをコピーして実行すると、一括でインストールが完了します：
+Copy and run this command to complete installation:
 
 ```bash
 npm install && \
@@ -40,68 +42,72 @@ chmod +x dist/cli/main.js && \
 nodenv rehash
 ```
 
-### 3. インストール（個別実行）
+Or simply:
+```bash
+npm run setup
+```
 
-個別に実行する場合は以下の順番で：
+### 3. Step-by-step Installation
+
+If you prefer to run commands individually:
 
 ```bash
-# 依存関係のインストール
+# Install dependencies
 npm install
 
-# TypeScriptのビルド
+# Build TypeScript
 npm run build
 
-# グローバルコマンドとして登録
+# Register as global command
 npm link
 
-# 実行権限の付与
+# Grant execution permission
 chmod +x dist/cli/main.js
 
-# nodenvを使用している場合はシムを更新
+# Update shims if using nodenv
 nodenv rehash
 ```
 
-上記で `llmine` コマンドがパスに登録され、どのディレクトリからでも呼び出せるようになります。
-もし `npm link` がうまく動作しない場合や、不要な場合は `npx llmine` 形式で利用しても構いません。
+This registers the `llmine` command in your PATH, making it available from any directory.
+If `npm link` doesn't work or isn't needed, you can use `npx llmine` format instead.
 
-## 使い方
+## Usage
 
-### 1. APIキーを設定
+### 1. Configure API Keys
 
-まずは使用したいプロバイダ (OpenAI / Azure / Anthropic / AWS Bedrock / Ollama など) の認証情報を設定します。  
-`llmine provider add <provider>` を実行すると、対話形式で必要な項目の入力を求められます。
+First, configure authentication for the providers you want to use (OpenAI / Azure / Anthropic / AWS Bedrock / Ollama).
+Running `llmine provider add <provider>` will prompt for required information interactively.
 
-### 1.1 モデルプロファイルの作成・切替
+### 1.1 Creating and Switching Model Profiles
 
-プロバイダとモデルを組み合わせた「モデルプロファイル」を作成し、用途に応じて切り替えられます。
+Create "model profiles" combining providers and models, and switch between them for different use cases.
 
 ```bash
-# モデルプロファイルを追加 (対話形式)
+# Add model profile (interactive)
 llmine model add
 
-# 登録済みプロファイルの一覧
+# List registered profiles
 llmine model list
 
-# 任意のプロファイルをアクティブ化
+# Activate a profile
 llmine model use openai-dev
 
-# 現在の設定内容を確認
+# Show current configuration
 llmine model show
 
-# プロファイルを削除
+# Remove a profile
 llmine model rm openai-dev
 
-# プロバイダプロファイルも CRUD 可能
+# Provider profiles also support CRUD operations
 llmine provider add openai
 llmine provider list
 llmine provider show openai-default
 llmine provider use openai-default
 llmine provider rm openai-default
-
 ```
 
-`model add` では、プロバイダ選択 → モデル取得（可能な場合はAPIからリアルタイム取得）→ 温度などの設定 → アクティブ化まで一括で行えます。
-プロバイダの認証情報が未設定の場合は、先に `llmine provider add <provider>` を実行してください。
+`model add` handles everything from provider selection → model fetching (real-time API fetch when available) → configuration (temperature, etc.) → activation.
+If provider credentials aren't configured, run `llmine provider add <provider>` first.
 
 #### OpenAI
 
@@ -109,7 +115,7 @@ llmine provider rm openai-default
 llmine provider add openai
 ```
 
-- OpenAI API Key（例：`sk-xxxxxx...`）を入力してください。
+- Enter OpenAI API Key (e.g., `sk-xxxxxx...`)
 
 #### Azure OpenAI
 
@@ -117,10 +123,10 @@ llmine provider add openai
 llmine provider add azure
 ```
 
-- Azure OpenAI Resource Name（例：`myazureopenai123`）
+- Azure OpenAI Resource Name (e.g., `myazureopenai123`)
 - Azure OpenAI API Key
-- Azure OpenAI Deployment Name（例：`gpt-35-test`）
-- Azure OpenAI API Version（例：`2024-05-01-preview` など）
+- Azure OpenAI Deployment Name (e.g., `gpt-35-test`)
+- Azure OpenAI API Version (e.g., `2024-05-01-preview`)
 
 #### Anthropic (Claude)
 
@@ -128,8 +134,8 @@ llmine provider add azure
 llmine provider add anthropic
 ```
 
-- Anthropic API Key (例: `sk-ant-api03-...`)
-- 任意で既定の Claude モデル ID（例: `claude-3-5-sonnet-latest`）
+- Anthropic API Key (e.g., `sk-ant-api03-...`)
+- Optionally, default Claude model ID (e.g., `claude-3-5-sonnet-latest`)
 
 #### AWS Bedrock
 
@@ -137,9 +143,9 @@ llmine provider add anthropic
 llmine provider add bedrock
 ```
 
-- 利用するリージョン（例: `us-east-1`）
-- 必要に応じて AWS Access Key / Secret (空欄の場合は環境変数や IAM ロールを使用)
-- 任意で既定のモデル ID（例: `anthropic.claude-3-5-sonnet-20241022-v1:0`）
+- Region to use (e.g., `us-east-1`)
+- AWS Access Key/Secret if needed (uses environment variables or IAM role if blank)
+- Optionally, default model ID (e.g., `anthropic.claude-3-5-sonnet-20241022-v1:0`)
 
 #### Ollama
 
@@ -147,28 +153,28 @@ llmine provider add bedrock
 llmine provider add ollama
 ```
 
-- 接続先ホスト (デフォルト: `http://localhost:11434`)
-- 任意で既定のローカルモデル ID（例: `llama3.1`）
+- Connection host (default: `http://localhost:11434`)
+- Optionally, default local model ID (e.g., `llama3.1`)
 
-これらを入力すると、`~/.llmine/config.json` に設定が保存されます。
+These settings are saved to `~/.llmine/config.json`.
 
-### 2. 登録済みプロバイダを確認
+### 2. Check Registered Providers
 
-登録済みのプロファイルを確認するには:
+To view registered profiles:
 
 ```bash
 llmine provider list
 ```
 
-### 3. モデルの一覧を確認
+### 3. List Available Models
 
-対応しているプロバイダの場合、利用可能なモデルの一覧を表示できます。
+For supported providers, you can display available models:
 
 ```bash
-# デフォルトのプロバイダ (または config.json で指定されているプロバイダ) のモデル一覧
+# List models from default provider (or provider specified in config.json)
 llmine models
 
-# 明示的にプロバイダを指定する場合
+# Explicitly specify provider
 llmine models --provider openai
 llmine models --provider azure
 llmine models --provider anthropic
@@ -176,97 +182,97 @@ llmine models --provider bedrock
 llmine models --provider ollama
 ```
 
-### 4. 実際にプロンプトを送信してみる
+### 4. Send Prompts
 
-#### 例1: 引数でプロンプトを直接指定
+#### Example 1: Direct prompt as argument
 
 ```bash
-# デフォルトではアクティブなモデルプロファイルに設定されたプロバイダ・モデルが使われます。
-llmine "明日の天気はどうなりそう？"
+# Uses active model profile's provider and model by default
+llmine "What's the weather forecast for tomorrow?"
 
-# モデルや temperature、プロバイダを指定したい場合
-llmine "アメリカの歴代大統領を一覧で教えて" \
+# Specify model, temperature, and provider
+llmine "List all US presidents" \
   --model gpt-3.5-turbo \
   --temperature 0.5 \
   --provider openai
 
-# Claude を利用する例
-llmine "最新のAI動向を3行でまとめて" \
+# Using Claude
+llmine "Summarize recent AI trends in 3 lines" \
   --provider anthropic \
   --model claude-3-5-sonnet-latest
 
-# ローカルの Ollama モデルを利用する例
-llmine "Dockerfileのセキュリティレビューをして" \
+# Using local Ollama model
+llmine "Review this Dockerfile for security issues" \
   --provider ollama \
   --model llama3.1
 ```
 
-#### 例2: パイプでの入力
+#### Example 2: Pipe input
 
 ```bash
-# ファイルの内容を読み込ませる場合など
+# Read file contents
 cat sample_prompt.txt | llmine
 
-# git diffを解析してコミットメッセージを生成
-git diff | llmine "コミットメッセージを提案して"
+# Generate commit message from git diff
+git diff | llmine "Suggest a commit message"
 
-# コードレビュー
-cat app.js | llmine "このコードをレビューして改善点を教えて"
+# Code review
+cat app.js | llmine "Review this code and suggest improvements"
 
-# ログ解析
-tail -n 100 error.log | llmine "エラーの原因を分析して"
+# Log analysis
+tail -n 100 error.log | llmine "Analyze error causes"
 ```
 
-### 5. 言語設定
+### 5. Language Settings
 
-CLIの表示言語を切り替えることができます：
+Switch the CLI display language:
 
 ```bash
-# 現在の言語設定を確認
+# Check current language
 llmine lang
 
-# 日本語に設定
+# Set to Japanese
 llmine lang set ja
 
-# 英語に設定
+# Set to English
 llmine lang set en
 ```
 
-### 6. Ollamaとの連携
+### 6. Ollama Integration
 
-ローカルで動作するOllamaのモデルを利用できます：
+Use locally running Ollama models:
 
 ```bash
-# Ollamaが起動していることを確認
+# Verify Ollama is running
 ollama list
 
-# Ollamaプロバイダーを追加
+# Add Ollama provider
 llmine provider add ollama
 
-# Ollamaモデルを使用
-llmine "質問" -p ollama
+# Use Ollama model
+llmine "question" -p ollama
 
-# 特定のモデルを指定
-llmine "質問" -p ollama -m llama3.1
+# Specify a model
+llmine "question" -p ollama -m llama3.1
 ```
 
-### 7. ヘルプ
+### 7. Help
 
-ヘルプは以下で表示されます。
+Display help:
 
 ```bash
 llmine help
 ```
 
-またはコマンドがよくわからなくなった場合は、引数なしで `llmine` と打てばヘルプが自動で表示されます。
+Or simply run `llmine` without arguments to show help automatically:
 
 ```bash
 llmine
 ```
 
-## 開発者向け情報
+## Developer Information
 
-### ディレクトリ構成
+### Directory Structure
 
 ```bash
 ├── .gitignore
@@ -274,38 +280,40 @@ llmine
 ├── package.json
 ├── package-lock.json
 ├── src
-│   ├── core                   # 共通ロジック (設定/モデル管理/クライアント)
+│   ├── core                   # Common logic (config/model management/clients)
 │   │   ├── aiClient.ts
 │   │   ├── config.ts
 │   │   ├── modelRegistry.ts
 │   │   └── providers.ts
-│   ├── cli                    # Ink による CLI UI
+│   ├── cli                    # Ink CLI UI
 │   │   ├── app.tsx
 │   │   ├── main.tsx
 │   │   ├── parseArgs.ts
 │   │   ├── screens/
 │   │   └── utils/
 │   └── utils
-│       └── banner.ts          # バナー表示用
+│       └── banner.ts          # Banner display
 └── ...
 ```
 
-### スクリプト一覧
+### Scripts
 
-- `npm run build`  
-  TypeScript をビルドし、`dist/core` と `dist/cli` に出力します。
-- `npm run dev`  
-  `ts-node` の ESM ローダー経由で Ink CLI を開発モード実行します。
-- `npm run format`  
-  Prettier によるコード整形を行います。
-- `npm run start`  
-  ビルド済みの CLI (`dist/cli/main.js`) を実行します。
-- `npm link`  
-  グローバルに `llmine` コマンドを登録します。
+- `npm run build`
+  Build TypeScript and output to `dist/core` and `dist/cli`.
+- `npm run dev`
+  Run Ink CLI in development mode via ts-node ESM loader.
+- `npm run format`
+  Format code with Prettier.
+- `npm run start`
+  Run built CLI (`dist/cli/main.js`).
+- `npm link`
+  Register `llmine` command globally.
+- `npm run setup`
+  Complete installation in one command.
 
-### 設定ファイル
+### Configuration File
 
-`~/.llmine/config.json` に、以下のような内容が保存されます。
+Settings are saved to `~/.llmine/config.json`:
 
 ```json
 {
@@ -334,10 +342,10 @@ llmine
 }
 ```
 
-一部パラメータの名称はソース側と対応しているため、直接編集も可能です。
+Parameter names correspond to source code, allowing direct editing if needed.
 
-## ライセンス
+## License
 
 [MIT License](./LICENSE)
 
-本ソフトウェアは MIT License のもとで公開されています。ライセンス条文をよくお読みの上、ご利用ください。
+This software is published under the MIT License. Please read the license terms carefully before use.
